@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard ZI FIPP UNNES 2026 — Update 2 Maret 2026</title>
+<style>
+:root{--primary:#1e3a5f;--accent:#2980b9;--success:#27ae60;--warning:#e67e22;--danger:#c0392b;--info:#8e44ad;--light:#f4f6f9;--white:#fff;--border:#dce3ec;--shadow:0 4px 18px rgba(30,58,95,.10);--radius:14px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#eaf0fb;color:#222}
+.topbar{background:linear-gradient(135deg,#1e3a5f,#2980b9);padding:16px 32px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,.2);position:sticky;top:0;z-index:200}
+.topbar h1{color:#fff;font-size:1.2em;font-weight:700}
+.topbar p{color:rgba(255,255,255,.75);font-size:.78em;margin-top:2px}
+.update-badge{background:#27ae60;color:#fff;padding:5px 14px;border-radius:20px;font-size:.78em;font-weight:700}
+.tabs{display:flex;gap:6px;padding:18px 32px 0;flex-wrap:wrap}
+.tab-btn{padding:9px 20px;border-radius:10px 10px 0 0;border:none;cursor:pointer;font-size:.88em;font-weight:600;background:#d4dff5;color:#1e3a5f;transition:.2s}
+.tab-btn.active{background:#fff;color:var(--accent);border-bottom:3px solid var(--accent);box-shadow:var(--shadow)}
+.tab-btn:hover:not(.active){background:#c3d1ec}
+.content{padding:0 32px 40px}
+.tab-panel{display:none;animation:fadeIn .3s}
+.tab-panel.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.section-title{font-size:1em;font-weight:700;color:var(--primary);margin:20px 0 10px;display:flex;align-items:center;gap:8px}
+.section-title::after{content:'';flex:1;height:2px;background:var(--border);border-radius:2px}
+.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin:16px 0}
+.stat-card{background:#fff;border-radius:var(--radius);padding:18px 16px;box-shadow:var(--shadow);border-top:4px solid #ccc;cursor:pointer;transition:.2s}
+.stat-card:hover{transform:translateY(-3px)}
+.stat-card .num{font-size:2.2em;font-weight:800}
+.stat-card .lbl{font-size:.78em;color:#777;margin-top:3px}
+.stat-card.ok{border-color:var(--success)}.stat-card.ok .num{color:var(--success)}
+.stat-card.warn{border-color:var(--warning)}.stat-card.warn .num{color:var(--warning)}
+.stat-card.danger{border-color:var(--danger)}.stat-card.danger .num{color:var(--danger)}
+.stat-card.info{border-color:var(--info)}.stat-card.info .num{color:var(--info)}
+.stat-card.total{border-color:var(--primary)}.stat-card.total .num{color:var(--primary)}
+.items-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:12px;margin-top:8px}
+.item-card{background:#fff;border-radius:10px;border-left:5px solid #ccc;padding:14px 16px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.07);transition:.2s;position:relative}
+.item-card:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(30,58,95,.13)}
+.item-card.danger{border-color:var(--danger)}
+.item-card.warn{border-color:var(--warning)}
+.item-card.ok{border-color:var(--success)}
+.item-card.new{border-color:var(--info)}
+.item-label{font-size:.72em;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px}
+.item-card.danger .item-label{color:var(--danger)}
+.item-card.warn .item-label{color:var(--warning)}
+.item-card.ok .item-label{color:var(--success)}
+.item-card.new .item-label{color:var(--info)}
+.item-title{font-size:.9em;font-weight:600;color:#2c3e50;margin-bottom:8px;line-height:1.4}
+.item-meta{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.click-hint{position:absolute;bottom:8px;right:12px;font-size:.7em;color:#bbb}
+.new-tag{position:absolute;top:8px;right:8px;background:var(--info);color:#fff;font-size:.65em;font-weight:700;padding:2px 7px;border-radius:20px}
+.bar-chart-wrap{background:#fff;border-radius:12px;padding:20px 24px;box-shadow:var(--shadow);margin:14px 0}
+.bar-chart{display:flex;flex-direction:column;gap:12px}
+.bar-row{display:flex;align-items:center;gap:10px}
+.bar-label{width:200px;font-size:.82em;color:#555;text-align:right;flex-shrink:0}
+.bar-track{flex:1;background:#edf2fb;border-radius:8px;height:26px;overflow:hidden}
+.bar-fill{height:100%;border-radius:8px;display:flex;align-items:center;padding-left:10px;font-size:.78em;font-weight:700;color:#fff;transition:width 1s}
+.bar-val{width:50px;font-size:.82em;font-weight:700;text-align:right;color:#333}
+.komponen-table{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden;box-shadow:var(--shadow);font-size:.85em}
+.komponen-table th{background:var(--primary);color:#fff;padding:11px 14px;text-align:left;font-weight:600}
+.komponen-table td{padding:11px 14px;border-bottom:1px solid var(--border);vertical-align:middle}
+.komponen-table tr:hover td{background:#f0f6ff}
+.pill{display:inline-block;padding:3px 9px;border-radius:20px;font-size:.73em;font-weight:600}
+.pill-ok{background:#d5f4e6;color:var(--success)}
+.pill-warn{background:#ffecd1;color:var(--warning)}
+.pill-danger{background:#ffd5d5;color:var(--danger)}
+.pill-info{background:#f0e2fa;color:var(--info)}
+.pill-gray{background:#eee;color:#777}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(20,30,50,.55);z-index:999;backdrop-filter:blur(2px)}
+.modal-overlay.open{display:flex;align-items:center;justify-content:center}
+.modal{background:#fff;border-radius:18px;width:90%;max-width:800px;max-height:88vh;overflow-y:auto;box-shadow:0 12px 48px rgba(0,0,0,.22);animation:modalIn .25s}
+@keyframes modalIn{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
+.modal-header{padding:22px 26px 14px;display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2px solid var(--border)}
+.modal-header h2{font-size:1.05em;color:var(--primary);font-weight:700;line-height:1.4;max-width:92%}
+.modal-close{background:none;border:none;font-size:1.5em;cursor:pointer;color:#aaa;padding:0 4px}
+.modal-close:hover{color:var(--danger)}
+.modal-body{padding:18px 26px 26px}
+.m-section{margin-bottom:18px}
+.m-label{font-size:.75em;text-transform:uppercase;letter-spacing:.7px;font-weight:700;color:#999;margin-bottom:7px}
+.gap-comparison{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px}
+.gap-box{padding:14px 16px;border-radius:10px}
+.gap-box.unit-box{background:#e8f6ee;border:2px solid #27ae60}
+.gap-box.tp-box{background:#fff4e5;border:2px solid #e67e22}
+.gap-box.tp-danger{background:#fdecea;border-color:var(--danger)}
+.gap-box .g-title{font-size:.7em;font-weight:700;text-transform:uppercase;color:#777;margin-bottom:3px}
+.gap-box .g-val{font-size:1.5em;font-weight:800}
+.gap-box.unit-box .g-val{color:var(--success)}
+.gap-box.tp-box .g-val{color:var(--warning)}
+.gap-box.tp-danger .g-val{color:var(--danger)}
+.catatan-box{background:#fff8e1;border-left:4px solid var(--warning);padding:12px 14px;border-radius:8px;font-size:.88em;line-height:1.6}
+.catatan-box.danger{background:#fff0f0;border-color:var(--danger)}
+.example-box{background:#f0f7ff;border-left:4px solid var(--accent);padding:12px 14px;border-radius:8px;margin-top:8px}
+.example-box h4{font-size:.78em;font-weight:700;color:var(--accent);margin-bottom:7px;text-transform:uppercase}
+.example-box ul{padding-left:16px}
+.example-box ul li{font-size:.85em;color:#333;line-height:1.7}
+.docs-ada{background:#e8f5e9;border-left:4px solid var(--success);padding:10px 14px;border-radius:8px;font-size:.85em;margin-top:6px}
+.docs-ada h4{font-size:.75em;font-weight:700;color:var(--success);text-transform:uppercase;margin-bottom:6px}
+.changelog-box{background:#f0f7ff;border:2px solid var(--info);border-radius:12px;padding:16px 20px;margin:14px 0}
+.changelog-box h3{color:var(--info);font-size:.95em;margin-bottom:10px}
+.changelog-item{display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px solid #e0eaf7;font-size:.85em}
+.changelog-item:last-child{border:none}
+.rencana-table{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden;box-shadow:var(--shadow);font-size:.85em}
+.rencana-table th{background:var(--primary);color:#fff;padding:11px 14px;text-align:left;font-weight:600}
+.rencana-table td{padding:11px 14px;border-bottom:1px solid var(--border);vertical-align:top}
+.rencana-table tr:last-child td{border:none}
+@media(max-width:700px){.topbar,.tabs,.content{padding-left:12px;padding-right:12px}.items-grid,.gap-comparison{grid-template-columns:1fr}.bar-label{width:100px}}
+</style>
+<script type="text/javascript" nonce="37c6ddfabea6449b85e3ecd611a" src="//local.adguard.org?ts=1772165048699&amp;type=content-script&amp;dmn=ppl-ai-code-interpreter-files.s3.amazonaws.com&amp;url=https%3A%2F%2Fppl-ai-code-interpreter-files.s3.amazonaws.com%2Fweb%2Fdirect-files%2Fb170cd5dbb7a971b8cf39af8f6965e51%2Fa001ebca-7284-4add-8be1-a19c7efb866a%2Fbf8c1a77.html%3Fresponse-content-disposition%3Dattachment%253B%2520filename%253Ddashboard_zi_fipp_v1_update_mar2026.html%253B%2520filename%252A%253DUTF-8%2527%2527dashboard_zi_fipp_v1_update_mar2026.html%26AWSAccessKeyId%3DASIA2F3EMEYEXCMLD25J%26Signature%3DrgF%252BS%252BVKINCz7rGCZ0vZO9vNq0I%253D%26x-amz-security-token%3DIQoJb3JpZ2luX2VjELT%252F%252F%252F%252F%252F%252F%252F%252F%252F%252FwEaCXVzLWVhc3QtMSJHMEUCIGGyc2pFNrNCWGtt%252FmTlwvQ3EzILg4d3SA2TkNRt%252FcXgAiEAjezLvu2Bl%252BgbvhCbNwBpyB%252BCvbuF9TCJ80P6zfOkR%252Bcq8wQIfBABGgw2OTk3NTMzMDk3MDUiDODhi3PQbCHAkX%252FktCrQBKBBvq%252B7RQMX5tGTsMoiaPEMtj%252FraruR17opVLN%252B%252FElKhMoDACJB%252FCeeiAYRXUe%252Bu08KpqhdFBg%252BWh2eE%252FsECqfzVBehEXXYC3UEsrNFKjBi2ooP%252BDzebZOrz5y5eTWssSM6rPiZ0Yvxjs5uKqq0A4TSifiwk3JU%252FLJua%252FdYfs4TeUXnFd7%252F6FYaIoaBvZPDNenk2hONA9XLRNy2D9UGAQytKlD9s7YP%252BwSlrgDy7q96anKtczjOgjMJDgo8gAYnwrK1%252BSXRSoDTYZSK1PzqpkfgCH2wwkpnN05F82ermBslmQUa6njKtKu%252BY1J2Vdih13PlUTeOsq3wrGl5GSDrs9f3ze4s03ipgI%252B95Kadc0xKacIqxNGuIZoGi%252BAY8paFFzUtTKiHHFRnTESGTLLPdNWBpbtPGsWtp4ZHKQGYMPxo%252BWBmibu4uVbnPfMhDQL7sTAys3FYEN5sTacmtuR%252BzSGepfjVHqqykLMHr7fSpwfoRnzqzwHDxEqbDnbGQ9QaLbHGUMfNLFJY%252Fn%252F5E3QdywkMf0uJSFHkRMXga71z62h3Uj61jWv8kaP8fs16LLqjGe%252BsYiwta8QZSWjmf%252FTtDzdywmJeClkuInHtunrOxsJpZuoE3s7pojb1G2LCl1O5l2QN4GpMAEg52%252FGMsJFNKvuFeil17HT2AZ59urNHYdbTCrLDPlRB5RI%252BkSZjF26KMjr4VKA7t8ALave3CxbMazwHCJDmKFhhVlQm0RXNoAk0exx6r5CRKs3aSa%252F162vbc4YbjuKL57ldZ%252BJGkIMkAX4w3%252F%252BTzQY6mAFkO%252Fa6h%252Ffbwf2L97FUB3S1ZeDugZ2m8pnURKw3EUvGPOM0WAowPb5LMV5TehzUDxPxrAOZo6OAyvzoIlAymG3QPYqDHbR18uzHPs9s4%252FKLS%252BQ0aAgTVXs%252FI3RJpWqW%252FwPQs%252F0m%252BQ6cqXt%252Br%252Ff1VQutNhUCxAPazDm5u0Wi33XJu4SpUQlIib%252BvvCACVaLiyvVqxTxcsR6cFg%253D%253D%26Expires%3D1772422216&amp;app=ai.perplexity.comet&amp;css=3&amp;js=1&amp;rel=1&amp;rji=1&amp;sbe=0"></script><script type="text/javascript" nonce="37c6ddfabea6449b85e3ecd611a" src="//local.adguard.org?ts=1772165048699&amp;name=AdGuard%20Extra&amp;type=user-script"></script></head>
+<body>
+
+<div class="topbar">
+  <div>
+    <h1>📊 Dashboard Zona Integritas FIPP UNNES 2026</h1>
+    <p>Fakultas Ilmu Pendidikan dan Psikologi | Update: 2 Maret 2026</p>
+  </div>
+  <span class="update-badge">🔄 Data Terbaru</span>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="showTab('overview')">📊 Overview</button>
+  <button class="tab-btn" onclick="showTab('perbaikan')">🚨 Perlu Perbaikan</button>
+  <button class="tab-btn" onclick="showTab('catatan')">📝 Catatan TP</button>
+  <button class="tab-btn" onclick="showTab('gap')">⚠️ Gap Penilaian</button>
+  <button class="tab-btn" onclick="showTab('baik')">✅ Sudah Baik</button>
+  <button class="tab-btn" onclick="showTab('aksi')">🎯 Rencana Aksi</button>
+  <button class="tab-btn" onclick="showTab('changelog')">🆕 Perubahan Data</button>
+</div>
+
+<div class="content">
+
+<!-- ===== OVERVIEW ===== -->
+<div class="tab-panel active" id="tab-overview">
+  <div style="background:linear-gradient(135deg,#1e3a5f,#2980b9);border-radius:14px;padding:22px 28px;margin:16px 0;color:#fff">
+    <h2 style="font-size:1.1em;margin-bottom:6px">📊 Hasil Penilaian LKE Zona Integritas FIPP UNNES 2026</h2>
+    <p style="font-size:.85em;opacity:.85">Diperbarui dari data terbaru 2 Maret 2026 • Sumber: LKE Inspirasi Dikti</p>
+    <div style="display:flex;gap:20px;margin-top:14px;flex-wrap:wrap">
+      <div style="text-align:center"><div style="font-size:2em;font-weight:800">60</div><div style="font-size:.75em;opacity:.8">Bobot Pengungkit</div></div>
+      <div style="text-align:center"><div style="font-size:2em;font-weight:800">40</div><div style="font-size:.75em;opacity:.8">Bobot Hasil</div></div>
+      <div style="text-align:center"><div style="font-size:2em;font-weight:800">3.87</div><div style="font-size:.75em;opacity:.8">IPAK (0-4)</div></div>
+      <div style="text-align:center"><div style="font-size:2em;font-weight:800">3.89</div><div style="font-size:.75em;opacity:.8">IPKP (0-4)</div></div>
+    </div>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card total" onclick="showTab('perbaikan')"><div class="num">6</div><div class="lbl">🚨 Item Prioritas<br>Perlu Perbaikan</div></div>
+    <div class="stat-card danger" onclick="showTab('gap')"><div class="num">10</div><div class="lbl">⚠️ Item Ada<br>Gap/Catatan TP</div></div>
+    <div class="stat-card warn" onclick="showTab('catatan')"><div class="num">16</div><div class="lbl">📝 Total Item<br>Ada Catatan TP</div></div>
+    <div class="stat-card ok" onclick="showTab('baik')"><div class="num">28</div><div class="lbl">✅ Item Sudah<br>Dinilai Baik</div></div>
+    <div class="stat-card info"><div class="num">4</div><div class="lbl">🆕 Item Baru<br>Ditemukan</div></div>
+  </div>
+
+  <div class="section-title">Progress per Komponen Utama</div>
+  <div class="bar-chart-wrap">
+    <div class="bar-chart">
+      <div class="bar-row"><div class="bar-label">Manajemen Perubahan</div><div class="bar-track"><div class="bar-fill" style="width:45%;background:#e67e22">45% — 5 item gap</div></div><div class="bar-val" style="color:#e67e22">⚠️</div></div>
+      <div class="bar-row"><div class="bar-label">Penataan Tatalaksana</div><div class="bar-track"><div class="bar-fill" style="width:90%;background:#27ae60">90% — OK</div></div><div class="bar-val" style="color:#27ae60">✅</div></div>
+      <div class="bar-row"><div class="bar-label">Manajemen SDM</div><div class="bar-track"><div class="bar-fill" style="width:70%;background:#e67e22">70% — 1 item gap</div></div><div class="bar-val" style="color:#e67e22">⚠️</div></div>
+      <div class="bar-row"><div class="bar-label">Akuntabilitas</div><div class="bar-track"><div class="bar-fill" style="width:75%;background:#e67e22">75% — 2 item gap</div></div><div class="bar-val" style="color:#e67e22">⚠️</div></div>
+      <div class="bar-row"><div class="bar-label">Pengawasan</div><div class="bar-track"><div class="bar-fill" style="width:85%;background:#27ae60">85% — OK</div></div><div class="bar-val" style="color:#27ae60">✅</div></div>
+      <div class="bar-row"><div class="bar-label">Penanganan Benturan Kepentingan</div><div class="bar-track"><div class="bar-fill" style="width:70%;background:#e67e22">70% — 1 item gap</div></div><div class="bar-val" style="color:#e67e22">⚠️</div></div>
+      <div class="bar-row"><div class="bar-label">Pelayanan Publik</div><div class="bar-track"><div class="bar-fill" style="width:88%;background:#27ae60">88% — OK</div></div><div class="bar-val" style="color:#27ae60">✅</div></div>
+    </div>
+  </div>
+
+  <div class="section-title">Ringkasan Komponen</div>
+  <table class="komponen-table">
+    <thead><tr><th>Komponen</th><th>Bobot</th><th>Status</th><th>Catatan Utama</th></tr></thead>
+    <tbody>
+      <tr><td><strong>A. Pengungkit</strong></td><td>60</td><td><span class="pill pill-warn">Perlu Perbaikan</span></td><td>6 item prioritas belum terpenuhi di Manajemen Perubahan</td></tr>
+      <tr><td>&nbsp;&nbsp;I. Manajemen Perubahan</td><td>4</td><td><span class="pill pill-danger">🚨 Prioritas</span></td><td>Tim ZI, Rencana Kerja, Monev, Agen Perubahan</td></tr>
+      <tr><td>&nbsp;&nbsp;II. Penataan Tatalaksana</td><td>3.5</td><td><span class="pill pill-ok">✅ Baik</span></td><td>SOP & SPBE sudah dinilai A oleh TP</td></tr>
+      <tr><td>&nbsp;&nbsp;III. Manajemen SDM</td><td>5</td><td><span class="pill pill-warn">⚠️ Perhatian</span></td><td>Perencanaan pegawai perlu diperjelas SMART-nya</td></tr>
+      <tr><td>&nbsp;&nbsp;IV. Akuntabilitas</td><td>6</td><td><span class="pill pill-warn">⚠️ Perhatian</span></td><td>LAKIN/LAKUK 2025 dan inovasi WBS perlu ditambah</td></tr>
+      <tr><td>&nbsp;&nbsp;V. Pengawasan</td><td>12</td><td><span class="pill pill-ok">✅ Baik</span></td><td>WBS dan Benturan Kepentingan sebagian besar sudah baik</td></tr>
+      <tr><td>&nbsp;&nbsp;VI. Pelayanan Publik</td><td>5</td><td><span class="pill pill-ok">✅ Baik</span></td><td>Layanan berbasis TI sudah berjalan baik</td></tr>
+      <tr><td><strong>B. Hasil</strong></td><td>40</td><td><span class="pill pill-ok">✅ Baik</span></td><td>IPAK 3.87 dan IPKP 3.89 dari skala 0-4</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ===== PERLU PERBAIKAN ===== -->
+<div class="tab-panel" id="tab-perbaikan">
+  <div style="background:#fdecea;border-left:5px solid var(--danger);border-radius:10px;padding:14px 18px;margin:14px 0;font-size:.88em;color:#721c24">
+    🚨 <strong>6 item berikut adalah prioritas utama yang harus diperbaiki segera.</strong> Klik setiap item untuk melihat detail, catatan TP, checklist dokumen, dan panduan contoh yang baik.
+  </div>
+  <div class="items-grid">
+    <div class="item-card danger" onclick="openModal('P1')"><div class="item-label">🚨 Prioritas — Manajemen Perubahan</div><div class="item-title">I.1.iii.c. Hasil Monitoring dan Evaluasi telah ditindaklanjuti</div><div class="item-meta"><span class="pill pill-ok">Unit: A</span><span class="pill pill-danger">TP: B</span><span class="pill pill-danger">Gap: A→B</span></div><div class="click-hint">🔍 klik detail</div></div>
+    <div class="item-card danger" onclick="openModal('P2')"><div class="item-label">🚨 Prioritas — Manajemen Perubahan</div><div class="item-title">I.1.iv.b. Sudah ditetapkan agen perubahan</div><div class="item-meta"><span class="pill pill-ok">Unit: A</span><span class="pill pill-danger">TP: B</span><span class="pill pill-danger">Gap: A→B</span></div><div class="click-hint">🔍 klik detail</div></div>
+    <div class="item-card danger" onclick="openModal('P3')"><div class="item-label">🚨 Prioritas — Manajemen Perubahan</div><div class="item-title">I.1.iv.d. Anggota organisasi terlibat dalam pembangunan ZI</div><div class="item-meta"><span class="pill pill-ok">Unit: A</span><span class="pill pill-danger">TP: B</span><span class="pill pill-danger">Gap: A→B</span></div><div class="click-hint">🔍 klik detail</div></div>
+    <div class="item-card danger" onclick="openModal('P4')"><div class="item-label">🚨 Prioritas — Manajemen Perubahan</div><div class="item-title">I.1.i.b. Penentuan anggota Tim dipilih melalui prosedur/mekanisme yang jelas</div><div class="item-meta"><span class="pill pill-ok">Unit: A</span><span class="pill pill-danger">TP: B</span><span class="pill pill-danger">Gap: A→B</span></div><div class="click-hint">🔍 klik detail</div></div>
+    <div class="item-card danger" onclick="openModal('P5')"><div class="item-label">🚨 Prioritas — Manajemen Perubahan</div><div class="item-title">I.1.ii.a. Terdapat dokumen rencana kerja pembangunan ZI menuju WBK/WBBM</div><div class="item-meta"><span class="pill pill-ok">Unit: Ya</span><span class="pill pill-danger">TP: Tidak</span><span class="pill pill-danger">Gap Kritis!</span></div><div class="click-hint">🔍 klik detail</div></div>
+    <div class="item-card danger" onclick="openModal('P6')"><div class="item-label">🚨 Prioritas — Manajemen Perubahan</div><div class="item-title">I.1.ii.b. Target-target prioritas yang relevan dengan tujuan WBK/WBBM</div><div class="item-meta"><span class="pill pill-ok">Unit: A</span><span class="pill pill-danger">TP: C</span><span class="pill pill-danger">Gap: A→C</span></div><div class="click-hint">🔍 klik detail</div></div>
+  </div>
+</div>
+
+<!-- ===== CATATAN TP ===== -->
+<div class="tab-panel" id="tab-catatan">
+  <div style="background:#fff8e1;border-left:5px solid var(--warning);border-radius:10px;padding:14px 18px;margin:14px 0;font-size:.88em;color:#7d5a00">
+    📝 Seluruh item yang memiliki catatan dari Tim Penilai. Klik untuk melihat detail catatan dan dokumen yang perlu dilengkapi.
+  </div>
+  <div class="section-title">🆕 Item Baru Ditemukan di Data Terbaru</div>
+  <div class="items-grid">
+    <div class="item-card new" onclick="openModal('N1')"><div class="new-tag">🆕 BARU</div><div class="item-label">📋 Akuntabilitas — Baru</div><div class="item-title">IV.f. Laporan kinerja telah memberikan informasi tentang kinerja</div><div class="item-meta"><span class="pill pill-ok">Unit: A</span><span class="pill pill-warn">TP: B</span><span class="pill pill-warn">Gap: A→B</span></div><div class="click-hint">🔍 klik detail</div></div>
+    <div class="item-card new" onclick="openModal('N2')"><div class="new-tag">🆕 BARU</div><div class="item-label">📋 Akuntabilitas — Baru</div><div class="item-title">IV.g. Terdapat sistem informasi/mekanisme informasi kinerja</div><div class="item-meta"><span class="pill pill-ok">Unit: Ya</span><span class="pill pill-warn">TP: B</span><span class="pill pill-warn">Perlu inovasi WBS</span></div><div class="click-hint">🔍 klik detail</div></div>
+    <div class="item-card new" onclick="openModal('N3')"><div class="new-tag">🆕 BARU</div><div class="item-label">📋 Benturan Kepentingan — Baru</div><div class="item-title">V.v.b. Penanganan Benturan Kepentingan telah disosialisasikan/internalisasi</div><div class="item-meta"><span class="pill pill-ok">Unit: A</span><span class="pill pill-warn">TP: B</span><span class="pill pill-warn">Perlu bukti kanal</span></div><div class="click-hint">🔍 klik detail</div></div>
+    <div class="item-card new" onclick="openModal('N4')"><div class="new-tag">🆕 BARU</div><div class="item-label">📋 Manajemen SDM — Baru</div><div class="item-title">III.i.a. Kebutuhan pegawai mengacu peta jabatan & analisis beban kerja</div><div class="item-meta"><span class="pill pill-ok">Unit: Ya</span><span class="pill pill-warn">TP: B</span><span class="pill pill-warn">SMART perlu diperjelas</span></div><div class="click-hint">🔍 klik detail</div></div>
+  </div>
+
+  <div class="section-title" style="margin-top:24px">Item dengan Catatan TP (Sebelumnya)</div>
+  <div class="items-grid">
+    <div class="item-card warn" onclick="openModal('C1')"><div class="item-label">📋 Manajemen Perubahan</div><div class="item-title">I.1.i.a. Unit kerja telah membentuk tim ZI</div><div class="item-meta"><span class="pill pill-ok">Unit: Ya</span><span class="pill pill-ok">TP: Ya</span><span class="pill pill-warn">Perlu: ST TIM ZI 2026</span></div><div class="click-hint">🔍 klik detail</div></div>
+    <div class="item-card warn" onclick="openModal('C2')"><div class="item-label">📋 Manajemen Perubahan</div><div class="item-title">I.1.iii.a. Kegiatan pembangunan sesuai rencana</div><div class="item-meta"><span class="pill pill-ok">Unit: A</span><span class="pill pill-ok">TP: A</span><span class="pill pill-ok">Sudah sesuai</span></div><div class="click-hint">🔍 klik detail</div></div>
+    <div class="item-card warn" onclick="openModal('C3')"><div class="item-label">📋 Manajemen Perubahan</div><div class="item-title">I.1.iii.b. Terdapat monitoring dan evaluasi terhadap pembangunan ZI</div><div class="item-meta"><span class="pill pill-ok">Unit: A</span><span class="pill pill-ok">TP: A</span><span class="pill pill-ok">Sudah baik</span></div><div class="click-hint">🔍 klik detail</div></div>
+    <div class="item-card warn" onclick="openModal('C4')"><div class="item-label">📋 Manajemen Perubahan</div><div class="item-title">I.1.iv.c. Telah dibangun budaya kerja dan pola pikir</div><div class="item-meta"><span class="pill pill-ok">Unit: A</span><span class="pill pill-ok">TP: A</span><span class="pill pill-ok">Sudah baik</span></div><div class="click-hint">🔍 klik detail</div></div>
+    <div class="item-card warn" onclick="openModal('C5')"><div class="item-label">📋 Akuntabilitas</div><div class="item-title">IV.e. Laporan kinerja telah disusun tepat waktu</div><div class="item-meta"><span class="pill pill-ok">Unit: Ya</span><span class="pill pill-ok">TP: Ya</span><span class="pill pill-ok">Dokumen sudah ada</span></div><div class="click-hint">🔍 klik detail</div></div>
+    <div class="item-card warn" onclick="openModal('C6')"><div class="item-label">📋 Pengawasan — WBS</div><div class="item-title">V.ii.b. Evaluasi atas penerapan Whistle Blowing System</div><div class="item-meta"><span class="pill pill-ok">Unit: A</span><span class="pill pill-ok">TP: A</span><span class="pill pill-ok">Sudah baik</span></div><div class="click-hint">🔍 klik detail</div></div>
+  </div>
+</div>
+
+<!-- ===== GAP ===== -->
+<div class="tab-panel" id="tab-gap">
+  <div style="background:#f3e5f5;border-left:5px solid var(--info);border-radius:10px;padding:14px 18px;margin:14px 0;font-size:.88em;color:#4a148c">
+    ⚠️ Item-item berikut memiliki perbedaan penilaian signifikan antara Unit dan Tim Penilai (TP). Klik untuk melihat penjelasan perbedaan dan apa yang harus dilengkapi.
+  </div>
+  <div class="items-grid">
+    <div class="item-card danger" onclick="openModal('P5')"><div class="item-label">🔴 Gap Kritis — Manajemen Perubahan</div><div class="item-title">I.1.ii.a. Dokumen rencana kerja pembangunan ZI</div><div class="item-meta"><span class="pill pill-ok">Unit: Ya</span><span class="pill pill-danger">TP: Tidak</span></div><div class="click-hint">🔍 klik detail</div></div>
+    <div class="item-card danger" onclick="openModal('P6')"><div class="item-label">🔴 Gap Kritis — Manajemen Perubahan</div><div class="item-title">I.1.ii.b. Target-target prioritas relevan WBK/WBBM</div><div class="item-meta"><span class="pill pill-ok">Unit: A</span><span class="pill pill-danger">TP: C</span></div><div class="click-hint">🔍 klik detail</div></div>
+    <div class="item-card warn" onclick="openModal('P1')"><div class="item-label">🟡 Gap — Manajemen Perubahan</div><div class="item-title">I.1.iii.c. Tindak lanjut hasil Monev</div><div class="item-meta"><span class="pill pill-ok">Unit: A</span><span class="pill pill-warn">TP: B</span></div><div class="click-hint">🔍 klik detail</div></div>
+    <div class="item-card warn" onclick="openModal('P2')"><div class="item-label">🟡 Gap — Manajemen Perubahan</div><div class="item-title">I.1.iv.b. Agen perubahan ditetapkan</div><div class="item-meta"><span class="pill pill-ok">Unit: A</span><span class="pill pill-warn">TP: B</span></div><div class="click-hint">🔍 klik detail</div></div>
+    <div class="item-card warn" onclick="openModal('P3')"><div class="item-label">🟡 Gap — Manajemen Perubahan</div><div class="item-title">I.1.iv.d. Anggota organisasi terlibat ZI</div><div class="item-meta"><span class="pill pill-ok">Unit: A</span><span class="pill pill-warn">TP: B</span></div><div class="click-hint">🔍 klik detail</div></div>
+    <div class="item-card warn" onclick="openModal('P4')"><div class="item-label">🟡 Gap — Manajemen Perubahan</div><div class="item-title">I.1.i.b. Prosedur/mekanisme pemilihan Tim ZI</div><div class="item-meta"><span class="pill pill-ok">Unit: A</span><span class="pill pill-warn">TP: B</span></div><div class="click-hint">🔍 klik detail</div></div>
+    <div class="item-card warn" onclick="openModal('N1')"><div class="new-tag">🆕</div><div class="item-label">🟡 Gap Baru — Akuntabilitas</div><div class="item-title">IV.f. Laporan kinerja memberikan informasi kinerja</div><div class="item-meta"><span class="pill pill-ok">Unit: A</span><span class="pill pill-warn">TP: B</span></div><div class="click-hint">🔍 klik detail</div></div>
+    <div class="item-card warn" onclick="openModal('N2')"><div class="new-tag">🆕</div><div class="item-label">🟡 Gap Baru — Akuntabilitas</div><div class="item-title">IV.g. Sistem informasi/mekanisme kinerja</div><div class="item-meta"><span class="pill pill-ok">Unit: Ya</span><span class="pill pill-warn">TP: B</span></div><div class="click-hint">🔍 klik detail</div></div>
+    <div class="item-card warn" onclick="openModal('N3')"><div class="new-tag">🆕</div><div class="item-label">🟡 Gap Baru — Benturan Kepentingan</div><div class="item-title">V.v.b. Sosialisasi penanganan benturan kepentingan</div><div class="item-meta"><span class="pill pill-ok">Unit: A</span><span class="pill pill-warn">TP: B</span></div><div class="click-hint">🔍 klik detail</div></div>
+    <div class="item-card warn" onclick="openModal('N4')"><div class="new-tag">🆕</div><div class="item-label">🟡 Gap Baru — Manajemen SDM</div><div class="item-title">III.i.a. Kebutuhan pegawai mengacu peta jabatan</div><div class="item-meta"><span class="pill pill-ok">Unit: Ya</span><span class="pill pill-warn">TP: B</span></div><div class="click-hint">🔍 klik detail</div></div>
+  </div>
+</div>
+
+<!-- ===== SUDAH BAIK ===== -->
+<div class="tab-panel" id="tab-baik">
+  <div style="background:#e8f5e9;border-left:5px solid var(--success);border-radius:10px;padding:14px 18px;margin:14px 0;font-size:.88em;color:#1b5e20">
+    ✅ Komponen-komponen berikut sudah dinilai baik oleh Tim Penilai. Pertahankan dan update dokumen secara berkala.
+  </div>
+  <div class="items-grid">
+    <div class="item-card ok" onclick="openModal('OK1')"><div class="item-label">✅ Penataan Tatalaksana</div><div class="item-title">I.2.i.a–c. SOP mengacu peta bisnis, diterapkan, dan dievaluasi</div><div class="item-meta"><span class="pill pill-ok">Unit: A</span><span class="pill pill-ok">TP: A</span></div><div class="click-hint">🔍 klik detail</div></div>
+    <div class="item-card ok" onclick="openModal('OK2')"><div class="item-label">✅ Penataan Tatalaksana — SPBE</div><div class="item-title">I.2.ii.a–d. Pengukuran kinerja, SDM, pelayanan publik, & Monev SPBE</div><div class="item-meta"><span class="pill pill-ok">Unit: A</span><span class="pill pill-ok">TP: A</span></div><div class="click-hint">🔍 klik detail</div></div>
+    <div class="item-card ok" onclick="openModal('OK3')"><div class="item-label">✅ Penataan Tatalaksana</div><div class="item-title">I.2.iii.a–b. Keterbukaan Informasi Publik (PPID)</div><div class="item-meta"><span class="pill pill-ok">Unit: A</span><span class="pill pill-ok">TP: A</span></div><div class="click-hint">🔍 klik detail</div></div>
+    <div class="item-card ok" onclick="openModal('OK4')"><div class="item-label">✅ Manajemen Perubahan</div><div class="item-title">I.1.ii.c. Mekanisme/media sosialisasi WBK/WBBM</div><div class="item-meta"><span class="pill pill-ok">Unit: A</span><span class="pill pill-ok">TP: A</span></div><div class="click-hint">🔍 klik detail</div></div>
+    <div class="item-card ok" onclick="openModal('OK5')"><div class="item-label">✅ Manajemen Perubahan</div><div class="item-title">I.1.iii.a–b. Kegiatan sesuai rencana & Monev ZI</div><div class="item-meta"><span class="pill pill-ok">Unit: A</span><span class="pill pill-ok">TP: A</span></div><div class="click-hint">🔍 klik detail</div></div>
+    <div class="item-card ok" onclick="openModal('OK6')"><div class="item-label">✅ Pengawasan — WBS</div><div class="item-title">V.ii.b–c. Evaluasi & tindak lanjut Whistle Blowing System</div><div class="item-meta"><span class="pill pill-ok">Unit: A</span><span class="pill pill-ok">TP: A</span></div><div class="click-hint">🔍 klik detail</div></div>
+    <div class="item-card ok" onclick="openModal('OK7')"><div class="item-label">✅ Penanganan Benturan Kepentingan</div><div class="item-title">V.v.a. Identifikasi/pemetaan benturan kepentingan</div><div class="item-meta"><span class="pill pill-ok">Unit: A</span><span class="pill pill-ok">TP: A</span></div><div class="click-hint">🔍 klik detail</div></div>
+    <div class="item-card ok"><div class="item-label">✅ Hasil ZI</div><div class="item-title">B. IPAK 3.87 & IPKP 3.89 dari skala 0–4</div><div class="item-meta"><span class="pill pill-ok">Nilai baik</span></div></div>
+  </div>
+</div>
+
+<!-- ===== RENCANA AKSI ===== -->
+<div class="tab-panel" id="tab-aksi">
+  <div class="section-title">🎯 Rencana Aksi Perbaikan — 4 Item Baru + 6 Item Lama</div>
+  <table class="rencana-table">
+    <thead><tr><th>No</th><th>Item</th><th>PIC</th><th>Target</th><th>Dokumen Wajib</th></tr></thead>
+    <tbody>
+      <tr style="background:#fff8f8"><td>1</td><td><strong>Rencana Kerja ZI</strong><br><small>I.1.ii.a — TP: Tidak</small></td><td>Koordinator ZI + Dekan</td><td><span class="pill pill-danger">TW1 — URGENT</span></td><td>Undangan, Daftar Hadir, Notulensi, Dokumen RK ZI + SK</td></tr>
+      <tr style="background:#fff8f8"><td>2</td><td><strong>Target Prioritas WBK</strong><br><small>I.1.ii.b — TP: C</small></td><td>Koordinator ZI</td><td><span class="pill pill-danger">TW1 — URGENT</span></td><td>Dokumen RK ZI dengan target SMART, pemetaan ke 6 komponen</td></tr>
+      <tr style="background:#fff8f8"><td>3</td><td><strong>Tindak Lanjut Monev</strong><br><small>I.1.iii.c — TP: B</small></td><td>Tim Monev & GPM</td><td><span class="pill pill-danger">TW1</span></td><td>Form tracking tindak lanjut, BA tindak lanjut per rekomendasi</td></tr>
+      <tr style="background:#fff8f8"><td>4</td><td><strong>Agen Perubahan</strong><br><small>I.1.iv.b — TP: B</small></td><td>Koordinator AP</td><td><span class="pill pill-danger">TW1</span></td><td>Laporan kontribusi AP, undangan koordinasi, notulensi bulanan</td></tr>
+      <tr><td>5</td><td><strong>Keterlibatan Anggota ZI</strong><br><small>I.1.iv.d — TP: B</small></td><td>Sekretariat ZI</td><td><span class="pill pill-warn">TW1-TW2</span></td><td>Pakta Integritas semua pegawai, notulensi rapat usulan</td></tr>
+      <tr><td>6</td><td><strong>SOP Pemilihan Tim ZI</strong><br><small>I.1.i.b — TP: B</small></td><td>Koordinator ZI</td><td><span class="pill pill-warn">TW2</span></td><td>SOP resmi, undangan, daftar hadir, berita acara, notulensi</td></tr>
+      <tr style="background:#f0f7ff"><td>7</td><td><strong>🆕 LAKIN/LAKUK 2025</strong><br><small>IV.f — TP: B — BARU</small></td><td>Tim Akuntabilitas</td><td><span class="pill pill-warn">TW1</span></td><td>LAKIN FIPP 2025, LAKUK FIPP 2025 yang sudah disahkan</td></tr>
+      <tr style="background:#f0f7ff"><td>8</td><td><strong>🆕 Inovasi WBS/Sistem Kinerja</strong><br><small>IV.g — TP: B — BARU</small></td><td>Tim IT/SPBE</td><td><span class="pill pill-warn">TW2</span></td><td>Bukti inovasi WBS yang diterapkan, laporan penerapan</td></tr>
+      <tr style="background:#f0f7ff"><td>9</td><td><strong>🆕 Bukti Kanal Benturan Kepentingan</strong><br><small>V.v.b — TP: B — BARU</small></td><td>Tim Pengawasan</td><td><span class="pill pill-warn">TW1-TW2</span></td><td>Screenshot web, instagram, medsos, publikasi sosialisasi BK</td></tr>
+      <tr style="background:#f0f7ff"><td>10</td><td><strong>🆕 Perjelas Indikator SMART SDM</strong><br><small>III.i.a — TP: B — BARU</small></td><td>Tim SDM</td><td><span class="pill pill-warn">TW2</span></td><td>Dokumen ABK yang memuat indikator SMART untuk tiap jabatan</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ===== CHANGELOG ===== -->
+<div class="tab-panel" id="tab-changelog">
+  <div class="section-title">🆕 Perubahan Data (2 Maret 2026)</div>
+  <div class="changelog-box">
+    <h3>📋 Hasil Cek Ricek Data Terbaru vs Data Lama</h3>
+    <div class="changelog-item"><span style="font-size:1.2em">🆕</span><div><strong>Item baru ditemukan: IV.f — Laporan kinerja (Akuntabilitas)</strong><br><small style="color:#555">TP menilai B karena LAKIN dan LAKUK 2025 belum disertakan. Perlu ditambahkan segera.</small></div></div>
+    <div class="changelog-item"><span style="font-size:1.2em">🆕</span><div><strong>Item baru ditemukan: IV.g — Sistem informasi kinerja (Akuntabilitas)</strong><br><small style="color:#555">TP menilai B karena sudah ada panduan WBS tetapi belum ada bukti inovasi yang diterapkan.</small></div></div>
+    <div class="changelog-item"><span style="font-size:1.2em">🆕</span><div><strong>Item baru ditemukan: V.v.b — Sosialisasi Benturan Kepentingan</strong><br><small style="color:#555">TP menilai B karena penanganan pengaduan melalui berbagai kanal belum ditunjukkan bukti dokumen via web, instagram, medsos.</small></div></div>
+    <div class="changelog-item"><span style="font-size:1.2em">🆕</span><div><strong>Item baru ditemukan: III.i.a — Perencanaan pegawai SMART (SDM)</strong><br><small style="color:#555">TP menilai B karena sebagian besar indikator belum memenuhi SMART secara lengkap.</small></div></div>
+    <div class="changelog-item"><span style="font-size:1.2em">✅</span><div><strong>Item baru OK: I.2.i.c — SOP dievaluasi</strong><br><small style="color:#555">Data baru menunjukkan SOP sudah dievaluasi dengan banyak dokumen AMI 2023-2025. TP: A.</small></div></div>
+    <div class="changelog-item"><span style="font-size:1.2em">✅</span><div><strong>Item baru OK: I.2.iii — Keterbukaan Informasi Publik (PPID)</strong><br><small style="color:#555">PPID aktif dengan SK, daftar informasi publik, dan notulensi rapat gugus. TP: A.</small></div></div>
+    <div class="changelog-item"><span style="font-size:1.2em">✅</span><div><strong>Item baru OK: V.v.a — Identifikasi Benturan Kepentingan</strong><br><small style="color:#555">Peraturan Dekan dan dokumen identifikasi sudah lengkap. TP: A.</small></div></div>
+    <div class="changelog-item"><span style="font-size:1.2em">ℹ️</span><div><strong>6 item prioritas lama — STATUS TIDAK BERUBAH</strong><br><small style="color:#555">Item I.1.i.b, I.1.ii.a, I.1.ii.b, I.1.iii.c, I.1.iv.b, I.1.iv.d masih menunjukkan gap yang sama.</small></div></div>
+  </div>
+
+  <div class="section-title" style="margin-top:20px">📊 Perbandingan Data Lama vs Baru</div>
+  <table class="komponen-table">
+    <thead><tr><th>Indikator</th><th>Data Lama (Feb 2026)</th><th>Data Baru (Mar 2026)</th><th>Status</th></tr></thead>
+    <tbody>
+      <tr><td>Item gap/catatan TP</td><td>12 item</td><td>16 item</td><td><span class="pill pill-warn">+4 item baru</span></td></tr>
+      <tr><td>Item sudah baik (TP=A)</td><td>22 item</td><td>28 item</td><td><span class="pill pill-ok">+6 item baru</span></td></tr>
+      <tr><td>Komponen terdampak</td><td>1 (Manajemen Perubahan)</td><td>4 komponen</td><td><span class="pill pill-warn">+3 komponen</span></td></tr>
+      <tr><td>Item prioritas urgent</td><td>6 item</td><td>6 item</td><td><span class="pill pill-ok">Tidak berubah</span></td></tr>
+      <tr><td>IPAK</td><td>3.87</td><td>3.87</td><td><span class="pill pill-ok">Sama</span></td></tr>
+      <tr><td>IPKP</td><td>3.89</td><td>3.89</td><td><span class="pill pill-ok">Sama</span></td></tr>
+    </tbody>
+  </table>
+</div>
+
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeBg(event)">
+<div class="modal">
+  <div class="modal-header">
+    <h2 id="modalTitle"></h2>
+    <button class="modal-close" onclick="closeModal()">✕</button>
+  </div>
+  <div class="modal-body" id="modalBody"></div>
+</div>
+</div>
+
+<script>
+const modalData = {
+P1:{kode:'I.1.iii.c',judul:'Hasil Monitoring dan Evaluasi telah ditindaklanjuti',komponen:'Manajemen Perubahan',unit:'A',tp:'B',tipe:'danger',catatan:'Mohon dilengkapi dokumen yang berisi administrasi tindak lanjut Monev',docs_ada:['Dokumentasi Monev Pelaksanaan Kegiatan WBK'],docs_perlu:['Undangan Rapat Tindak Lanjut Monev','Daftar Hadir Rapat Tindak Lanjut','Notulensi Rapat Tindak Lanjut','Laporan Implementasi Tindak Lanjut (per rekomendasi)','Berita Acara Tindak Lanjut Monev'],contoh:'Buat form tracking: setiap rekomendasi Monev harus punya status (Selesai/Proses/Belum), PIC, dan deadline. Lampirkan BA setiap kali rekomendasi ditindaklanjuti.'},
+P2:{kode:'I.1.iv.b',judul:'Sudah ditetapkan agen perubahan',komponen:'Manajemen Perubahan',unit:'A',tp:'B',tipe:'danger',catatan:'Unit dapat melengkapi dokumen yang berisi laporan, undangan koordinasi, dan kontribusi agen perubahan',docs_ada:['SK Agen Perubahan','Laporan Penetapan Agen Perubahan'],docs_perlu:['Undangan Koordinasi Agen Perubahan (bulanan)','Notulensi Rapat Koordinasi AP','Laporan Kontribusi per Agen Perubahan','Evidence kegiatan/output dari setiap AP'],contoh:'Setiap Agen Perubahan harus punya Rencana Aksi Individual dan laporan progres bulanan. Contoh format: Nama AP | Program | Output | Capaian | Bukti.'},
+P3:{kode:'I.1.iv.d',judul:'Anggota organisasi terlibat dalam pembangunan ZI',komponen:'Manajemen Perubahan',unit:'A',tp:'B',tipe:'danger',catatan:'Unit dapat melengkapi dokumen Pakta Integritas Pimpinan, Laporan Hasil, dan Kegiatan ZI',docs_ada:['Laporan Akhir Hasil Kegiatan ZI FIPP UNNES'],docs_perlu:['Pakta Integritas Pimpinan (Dekan, Wadek, Kaprodi)','Pakta Integritas SEMUA dosen dan tendik','Notulensi rapat yang mencatat usulan anggota','Bukti bahwa usulan anggota diakomodasi dalam keputusan'],contoh:'Pakta Integritas bukan hanya pimpinan. Semua pegawai wajib tanda tangan. Lampirkan juga dokumentasi rapat di mana suara pegawai diakomodasi dalam kebijakan ZI.'},
+P4:{kode:'I.1.i.b',judul:'Penentuan anggota Tim dipilih melalui prosedur/mekanisme yang jelas',komponen:'Manajemen Perubahan',unit:'A',tp:'B',tipe:'danger',catatan:'Unit dapat melengkapi dokumen pendukung: Undangan, Daftar Hadir, Notulen, Dokumentasi, Berita Acara, SOP Pemilihan Tim ZI',docs_ada:['Dokumentasi Rapat Seleksi Tim ZI','Lembar Kesediaan Tim Kerja ZI'],docs_perlu:['Undangan Rapat mekanisme Tim ZI','Daftar Hadir rapat','Notulensi rapat perumusan mekanisme','Berita Acara perumusan','SOP Pemilihan Tim ZI (dokumen resmi dengan flowchart)'],contoh:'SOP Pemilihan Tim ZI minimal memuat: Dasar hukum, Flowchart alur seleksi, Kriteria seleksi anggota, Output final (SK/ST). Tanpa SOP ini, prosedur dianggap tidak formal.'},
+P5:{kode:'I.1.ii.a',judul:'Terdapat dokumen rencana kerja pembangunan ZI menuju WBK/WBBM',komponen:'Manajemen Perubahan',unit:'Ya',tp:'Tidak',tipe:'danger',catatan:'Unit dapat melengkapi dokumen: Undangan rapat, Daftar hadir, Dokumentasi, Notulen, dan Dokumen Rencana Kerja ZI unit',docs_ada:['Dokumen Rencana Kerja ZI (disahkan Dekan)'],docs_perlu:['Undangan rapat penyusunan Rencana Kerja ZI','Daftar hadir rapat','Notulensi rapat penyusunan','Dokumen final RK ZI 2026 yang ditandatangani Dekan','SK Pengesahan Rencana Kerja ZI 2026'],contoh:'TP menilai TIDAK karena tidak ada bukti administrasi proses penyusunan. Dokumennya sudah ada, tapi tidak ada bukti PROSES pembuatannya. Tambahkan seluruh administrasi rapat penyusunan.'},
+P6:{kode:'I.1.ii.b',judul:'Target-target prioritas yang relevan dengan tujuan WBK/WBBM',komponen:'Manajemen Perubahan',unit:'A',tp:'C',tipe:'danger',catatan:'Diperlukan dokumen administrasi Rapat Penyusunan Rencana Kerja ZI lengkap + target SMART',docs_ada:['Dokumen Rencana ZI dengan target yang relevan'],docs_perlu:['Undangan rapat penyusunan target prioritas','Daftar hadir rapat','Notulensi rapat penyusunan target','Dokumen RK ZI dengan target SMART','Tabel pemetaan target ke 6 komponen LKE'],contoh:'Target harus SMART: Specific (jelas), Measurable (terukur), Achievable (realistis), Relevant (relevan dengan LKE), Timebound (ada deadline). Buat tabel: No | Target | Indikator | Bobot Komponen | Deadline | PIC.'},
+N1:{kode:'IV.f',judul:'Laporan kinerja telah memberikan informasi tentang kinerja',komponen:'Akuntabilitas',unit:'A',tp:'B',tipe:'warn',new:true,catatan:'LAKIN dan LAKUK 2025 mohon disertakan',docs_ada:['LAKIN FIPP 2023','LAKIN FIPP 2024','LAKUK FIPP 2023','LAKUK FIPP 2024','LAKIN UNNES 2023','LAKIN UNNES 2024'],docs_perlu:['LAKIN FIPP 2025 (segera susun dan upload)','LAKUK FIPP 2025 (segera susun dan upload)'],contoh:'TP menilai B karena laporan 2025 belum ada. Segera susun LAKIN dan LAKUK 2025 mengikuti format sebelumnya, minta tanda tangan Dekan, dan upload ke sistem.'},
+N2:{kode:'IV.g',judul:'Terdapat sistem informasi/mekanisme informasi kinerja',komponen:'Akuntabilitas',unit:'Ya',tp:'B',tipe:'warn',new:true,catatan:'Sudah ada panduan WBS, belum ada bukti inovasi yang diterapkan',docs_ada:['Panduan SIM SKP','Tangkap Layar Sistem Pelaporan','LAKUK FIPP 2023-2024'],docs_perlu:['Bukti inovasi WBS yang benar-benar diterapkan (bukan hanya panduan)','Screenshot penerapan inovasi','Laporan penggunaan sistem terbaru'],contoh:'Inovasi bukan hanya membuat panduan, tapi harus ada bukti penerapannya. Contoh: screenshot WBS yang aktif digunakan, laporan jumlah pengguna, atau dokumentasi pelatihan penggunaan inovasi tersebut.'},
+N3:{kode:'V.v.b',judul:'Penanganan Benturan Kepentingan telah disosialisasikan/internalisasi',komponen:'Penanganan Benturan Kepentingan',unit:'A',tp:'B',tipe:'warn',new:true,catatan:'Penanganan pengaduan melalui berbagai kanal dan media perlu ditunjukkan bukti dokumen via web, instagram, medsos, publikasi dll',docs_ada:['Notulensi Sosialisasi 2024 & 2025','Dokumen Internalisasi BK 2024 & 2025','Materi Sosialisasi','Dokumentasi Sosialisasi'],docs_perlu:['Screenshot publikasi di website FIPP tentang BK','Screenshot instagram/medsos yang memuat konten BK','Flyer/infografis BK yang disebarkan lewat medsos','Link/tautan kanal pengaduan yang aktif'],contoh:'Sosialisasi tatap muka sudah baik. Yang kurang adalah bukti sosialisasi via kanal digital. Buat 1 postingan instagram/website khusus tentang penanganan benturan kepentingan, screenshot, dan lampirkan.'},
+N4:{kode:'III.i.a',judul:'Kebutuhan pegawai mengacu peta jabatan & analisis beban kerja',komponen:'Manajemen SDM',unit:'Ya',tp:'B',tipe:'warn',new:true,catatan:'Sebagian besar indikator telah memenuhi SMART. Akan tetapi perlu lebih diperjelas lagi SMART-nya',docs_ada:['Peta Jabatan FIPP UNNES PTNBH','Rekap ABK','Dokumen rapat kebutuhan pegawai','Notulen Rapat Usulan CPNS'],docs_perlu:['Revisi ABK dengan indikator SMART yang lebih jelas dan terukur','Tabel: Jabatan | Kebutuhan | Indikator Terukur | Target Jumlah | Timeline'],contoh:'Indikator SMART dalam ABK: Bukan hanya "perlu 5 dosen", tapi "perlu 5 dosen bidang X dengan ratio 1:30 mahasiswa, berdasarkan Peraturan Y, target terpenuhi pada semester Genap 2026". Semakin spesifik dan terukur, semakin baik.'},
+C1:{kode:'I.1.i.a',judul:'Unit kerja telah membentuk tim ZI',komponen:'Manajemen Perubahan',unit:'Ya',tp:'Ya',tipe:'ok',catatan:'Unit dapat melengkapi dengan bukti ST TIM ZI 2026',docs_ada:['Dokumentasi Pembentukan Tim ZI'],docs_perlu:['Surat Tugas (ST) Tim ZI Tahun 2026 yang eksplisit menyebut 2026'],contoh:'Pastikan nomor ST dan tahun penerbitan adalah 2026. Kalau masih menggunakan ST lama, perbarui segera.'},
+C2:{kode:'I.1.iii.a',judul:'Kegiatan pembangunan sesuai rencana',komponen:'Manajemen Perubahan',unit:'A',tp:'A',tipe:'ok',catatan:'Unit sudah melakukan seluruh kegiatan pembangunan sesuai rencana',docs_ada:['Dokumentasi Monev kegiatan ZI','Laporan Pelaksanaan Rencana Aksi WBK'],docs_perlu:['Update laporan capaian TW terbaru 2026'],contoh:'Pertahankan. Update laporan capaian secara berkala setiap TW.'},
+C3:{kode:'I.1.iii.b',judul:'Monitoring dan evaluasi terhadap pembangunan ZI',komponen:'Manajemen Perubahan',unit:'A',tp:'A',tipe:'ok',catatan:'Unit sudah melakukan monitoring dan evaluasi terhadap pembangunan ZI',docs_ada:['Dokumentasi Monev ZI','Survei Pemahaman ZI'],docs_perlu:['Lanjutkan Monev berkala setiap TW'],contoh:'Pertahankan jadwal Monev. Pastikan ada laporan per TW.'},
+C4:{kode:'I.1.iv.c',judul:'Budaya kerja dan pola pikir di lingkungan organisasi',komponen:'Manajemen Perubahan',unit:'A',tp:'A',tipe:'ok',catatan:'Unit telah membangun budaya kerja dan pola pikir',docs_ada:['Laporan Budaya Kerja FIPP','Presensi Dosen PNS'],docs_perlu:['Update laporan budaya kerja 2026'],contoh:'Pertahankan. Tambahkan data presensi terbaru 2026.'},
+C5:{kode:'IV.e',judul:'Laporan kinerja disusun tepat waktu',komponen:'Akuntabilitas',unit:'Ya',tp:'Ya',tipe:'ok',catatan:'Dokumen sudah ada',docs_ada:['LAKIN FIPP 2023 & 2024','LAKUK FIPP 2023 & 2024','Perjanjian Kinerja Dekan 2023-2025'],docs_perlu:['LAKIN FIPP 2025 (segera)','LAKUK FIPP 2025 (segera)'],contoh:'Pertahankan ketepatan waktu. Segera susun laporan 2025.'},
+C6:{kode:'V.ii.b',judul:'Evaluasi atas penerapan Whistle Blowing System',komponen:'Pengawasan',unit:'A',tp:'A',tipe:'ok',catatan:'Telah dilakukan evaluasi atas penerapan WBS',docs_ada:['Laporan WBS 2026'],docs_perlu:['Update laporan WBS setiap TW'],contoh:'Pertahankan. Lanjutkan evaluasi WBS secara berkala.'},
+OK1:{kode:'I.2.i.a–c',judul:'SOP — mengacu peta bisnis, diterapkan, dan dievaluasi',komponen:'Penataan Tatalaksana',unit:'A',tp:'A',tipe:'ok',catatan:'SOP sudah dinilai A. Inovasi SOP Lab Terpadu dan SOP Konseling sudah baik.',docs_ada:['SOP Lab BK','SOP Akademik Universitas','Bagan SOP Akademik','Laporan AMI 2023-2025','Tindak Lanjut AMI 2024-2025'],docs_perlu:['Update SOP 2026 jika ada perubahan kebijakan','Laporan Monev SOP semester genap 2026'],contoh:'Pertahankan. Dokumentasikan inovasi SOP baru di 2026 jika ada.'},
+OK2:{kode:'I.2.ii.a–d',judul:'SPBE — pengukuran kinerja, SDM, pelayanan, monev',komponen:'Penataan Tatalaksana',unit:'A',tp:'A',tipe:'ok',catatan:'SIKADU, MyUNNES-Kepegawaian, dan sistem pelayanan publik sudah baik.',docs_ada:['Panduan SIKADU','Panduan MyUNNES','Laporan Monev TW I-IV','Inovasi Sistem 1 & 2'],docs_perlu:['Update panduan sistem terbaru 2026','Laporan Monev SPBE TW1 2026'],contoh:'Pertahankan inovasi sistem yang sudah ada. Dokumentasikan setiap update/inovasi baru.'},
+OK3:{kode:'I.2.iii.a–b',judul:'Keterbukaan Informasi Publik (PPID)',komponen:'Penataan Tatalaksana',unit:'A',tp:'A',tipe:'ok',catatan:'PPID aktif dengan SK, daftar informasi publik, dan rapat gugus berjalan.',docs_ada:['SK PPID','Daftar Informasi Publik FIPP 2025','Notulensi Rapat Gugus','Laporan Monitoring'],docs_perlu:['Update Daftar Informasi Publik 2026','Rapat gugus TW1 2026'],contoh:'Pertahankan. Update daftar informasi publik setiap semester.'},
+OK4:{kode:'I.1.ii.c',judul:'Mekanisme/media sosialisasi WBK/WBBM',komponen:'Manajemen Perubahan',unit:'A',tp:'A',tipe:'ok',catatan:'Media sosialisasi sudah beragam (TV, Instagram, Website) dan efektif.',docs_ada:['Dokumentasi Sosialisasi WBK kepada pegawai','Dokumentasi Sosialisasi di Medsos','Pemasangan Spanduk/Banner','Hasil Survei Pemahaman ZI'],docs_perlu:['Update konten media sosial 2026 secara berkala'],contoh:'Pertahankan keberagaman media. Pastikan konten di Instagram/Website selalu diupdate.'},
+OK5:{kode:'I.1.iii.a–b',judul:'Kegiatan sesuai rencana & Monev ZI',komponen:'Manajemen Perubahan',unit:'A',tp:'A',tipe:'ok',catatan:'Kegiatan sudah sesuai rencana dan Monev berjalan.',docs_ada:['Dokumentasi Monev','Laporan Rencana Aksi WBK'],docs_perlu:['Laporan Monev TW1 2026'],contoh:'Pertahankan. Lakukan Monev di awal setiap TW.'},
+OK6:{kode:'V.ii.b–c',judul:'Evaluasi & tindak lanjut Whistle Blowing System',komponen:'Pengawasan',unit:'A',tp:'A',tipe:'ok',catatan:'WBS sudah dievaluasi dan ditindaklanjuti.',docs_ada:['Laporan WBS 2026','Laporan Tindak Lanjut WBS'],docs_perlu:['Update laporan WBS TW1 2026'],contoh:'Pertahankan. Pastikan setiap laporan evaluasi punya tindak lanjut tertulis.'},
+OK7:{kode:'V.v.a',judul:'Identifikasi/pemetaan benturan kepentingan',komponen:'Penanganan Benturan Kepentingan',unit:'A',tp:'A',tipe:'ok',catatan:'Peraturan Dekan dan dokumen identifikasi sudah ada dan lengkap.',docs_ada:['Identifikasi/Pemetaan Benturan Kepentingan','Identifikasi 2024 & 2025','Peraturan Dekan BK'],docs_perlu:['Update identifikasi BK 2026'],contoh:'Pertahankan. Update dokumen identifikasi setiap tahun.'}
+};
+
+function openModal(id){
+  const d=modalData[id];if(!d)return;
+  document.getElementById('modalTitle').textContent=d.kode+'. '+d.judul;
+  const tc=d.tipe==='danger'?'var(--danger)':d.tipe==='warn'?'var(--warning)':'var(--success)';
+  const tl=d.tipe==='danger'?'🚨 Perlu Perbaikan Segera':d.tipe==='warn'?'⚠️ Ada Catatan/Gap':'✅ Sudah Baik';
+  const isNew=d.new?'<span style="background:var(--info);color:#fff;padding:2px 8px;border-radius:12px;font-size:.72em;font-weight:700;margin-left:6px">🆕 DATA BARU</span>':'';
+  let body=`
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;align-items:center">
+      <span class="pill" style="background:${tc}20;color:${tc}">${tl}</span>
+      <span class="pill pill-gray">${d.komponen}</span>${isNew}
+    </div>
+    <div class="m-section">
+      <div class="m-label">Perbandingan Penilaian</div>
+      <div class="gap-comparison">
+        <div class="gap-box unit-box"><div class="g-title">Jawaban Unit FIPP</div><div class="g-val">${d.unit}</div></div>
+        <div class="gap-box ${d.unit!==d.tp&&d.tp!==d.unit?'tp-danger':'tp-box'}"><div class="g-title">Penilaian Tim Penilai (TP)</div><div class="g-val">${d.tp}</div></div>
+      </div>
+    </div>
+    <div class="m-section">
+      <div class="m-label">💬 Catatan Tim Penilai</div>
+      <div class="catatan-box ${d.tipe==='danger'?'danger':''}">${d.catatan}</div>
+    </div>`;
+  if(d.docs_ada&&d.docs_ada.length){
+    body+=`<div class="m-section"><div class="m-label">📁 Dokumen yang Sudah Ada</div><div class="docs-ada"><h4>✅ Evidence tersedia</h4><ul>${d.docs_ada.map(x=>`<li>${x}</li>`).join('')}</ul></div></div>`;
+  }
+  if(d.docs_perlu&&d.docs_perlu.length){
+    body+=`<div class="m-section"><div class="m-label">📋 Dokumen yang Perlu Dilengkapi</div><div class="example-box"><h4>📌 Checklist dokumen wajib</h4><ul>${d.docs_perlu.map(x=>`<li>${x}</li>`).join('')}</ul></div></div>`;
+  }
+  if(d.contoh){
+    body+=`<div class="m-section"><div class="m-label">💡 Panduan: Bagaimana Seharusnya</div><div class="example-box"><h4>✨ Contoh yang Baik</h4><p style="font-size:.87em;color:#333;line-height:1.7">${d.contoh}</p></div></div>`;
+  }
+  document.getElementById('modalBody').innerHTML=body;
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeModal(){document.getElementById('modalOverlay').classList.remove('open');document.body.style.overflow='';}
+function closeBg(e){if(e.target===document.getElementById('modalOverlay'))closeModal();}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+function showTab(id){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  const map={overview:0,perbaikan:1,catatan:2,gap:3,baik:4,aksi:5,changelog:6};
+  document.querySelectorAll('.tab-btn')[map[id]].classList.add('active');
+}
+</script>
+</body>
+</html>
