@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard ZI FIPP UNNES 2026 — Auto GitHub</title>
+<script type="text/javascript" nonce="8ecb10c984454b9da4640fc42ba" src="//local.adguard.org?ts=1772644098539&amp;type=content-script&amp;dmn=ppl-ai-code-interpreter-files.s3.amazonaws.com&amp;url=https%3A%2F%2Fppl-ai-code-interpreter-files.s3.amazonaws.com%2Fweb%2Fdirect-files%2Fb333f9063a71701e55fd46fa615c9590%2F3f372d59-042b-42c9-8aac-50ad40e23001%2F50644a45.html%3Fresponse-content-disposition%3Dattachment%253B%2520filename%253Ddashboard_zi_fipp_v2_github_autofetch.html%253B%2520filename%252A%253DUTF-8%2527%2527dashboard_zi_fipp_v2_github_autofetch.html%26AWSAccessKeyId%3DASIA2F3EMEYE5U3NTDTM%26Signature%3Dcux3bJQDYOJSvrsb3nxLLISDEpE%253D%26x-amz-security-token%3DIQoJb3JpZ2luX2VjEPH%252F%252F%252F%252F%252F%252F%252F%252F%252F%252FwEaCXVzLWVhc3QtMSJIMEYCIQC9yetuYdCdwTUIM0jkdsGM9p53MFXiSlF9aTf%252Fop%252Bb8AIhAI7Pr6aRkKoSjblgIifMjA19Hvekdg2azB1%252B8s2icOBIKvwECLr%252F%252F%252F%252F%252F%252F%252F%252F%252F%252FwEQARoMNjk5NzUzMzA5NzA1IgygXk7Ko1wEvD3pVqAq0AR9uE9%252FALlabL3Zb2NY3rPhY6XDGyOx%252F5iAiQuReP%252FEfCqnIRl5OSUo4uD7CFTPcHMQHDIRgYUd7jc96s7UbcNlaxFYNdGWRMy1DY5tOpU0x5nBmlCpvupo0jjEvoiD8rj3YGJo5YL2GpS7r8j2%252BdcnpfokaUGIpfktsEusSJTaIzJ5g6VxwY5%252FJKCqhbh8SEIEZ2T48Rb991AO4TDpcZGwl3KaPqohsgHqMf8qSeqOX5zDLz1pdmxGlchO%252FBqlDLBLIDLZTHmou624OLWWk4bCAtnVNsuNWwMSKzn3%252FCoG0LwxXov%252BrqxbChl6YE%252FvJiHUixaksyMCSQkw58Gj3VU5fxxJ03fnFSlPLW9vsHtYk2RIh6n%252FjGGaVhIVG4CaGemsLw78mcmPs%252FA9C4dx%252FLtGgBoF%252Fin5HBBamRPkduX6CJpi%252F6yciviQOANeozfn%252Be55fcEWue47I8uKKEQngdtronCjjxNoyTfUZvpzJCRpq4MelITo9z8h0j%252BCnNWwEAeDCABfe9p9seL9GJUj9DYs5l4rgspsiQmRLZtVV7v7ZWv7fo1O5a1sMBFwNpOllU%252FVlpEDZb0thNPZBaNJ57CirS7HEj853zZy11j%252BC2AGfcAKo%252F1QU3bTAVKpCcs9fi52HMFu9QlhMR33F4W1AemWErSiA02fjnFvv7WbqzQGxYUmwhzNF62DfF%252FSdXlXAtG6g%252Bc%252BsHOLxbUpai1bs3xT6PaI4xsPevzxHMLJ4XN8LRQziVFvHT1ulh5Ik4Dgeels0slIVutcy6xWaxKi2EsBMKO9oc0GOpcBYhj2QthPCziTpgI7YaX%252Fag8zhWlmy4U%252B10X4PVavgB8hc9vTSaRqcS2vPnsMDLTs%252F3hXohy3WAJs0zrid2wmPqaoov%252FjZCkDVH%252Fgd%252Ffs1KNZeCY9QR5CQYdLUfusAa776PxV2hr6RwVfbBVZovn4QDUAatedc%252BEkMxnl4lFB6bEakES%252BUYeEJZc8XD%252F26siCzIMnDnAjtg%253D%253D%26Expires%3D1772644889&amp;app=ai.perplexity.comet&amp;css=3&amp;js=1&amp;rel=1&amp;rji=1&amp;sbe=1"></script><script type="text/javascript" nonce="8ecb10c984454b9da4640fc42ba" src="//local.adguard.org?ts=1772644098539&amp;name=AdGuard%20Extra&amp;type=user-script"></script><script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<style>
+:root{--primary:#1e3a5f;--accent:#2980b9;--success:#27ae60;--warning:#e67e22;--danger:#c0392b;--info:#8e44ad;--light:#f4f6f9;--white:#fff;--border:#dce3ec;--shadow:0 4px 18px rgba(30,58,95,.10);--radius:14px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#eaf0fb;color:#222}
+
+/* ===== TOPBAR ===== */
+.topbar{background:linear-gradient(135deg,#1e3a5f,#2980b9);padding:14px 28px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,.2);position:sticky;top:0;z-index:200;flex-wrap:wrap;gap:8px}
+.topbar-left h1{color:#fff;font-size:1.1em;font-weight:700}
+.topbar-left p{color:rgba(255,255,255,.75);font-size:.76em;margin-top:2px}
+.topbar-right{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.status-dot{width:10px;height:10px;border-radius:50%;background:#95a5a6;flex-shrink:0;transition:.3s}
+.status-dot.ok{background:#27ae60;box-shadow:0 0 6px #27ae60}
+.status-dot.loading{background:#f39c12;animation:pulse 1s infinite}
+.status-dot.error{background:#c0392b}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.status-text{font-size:.76em;color:rgba(255,255,255,.85)}
+.btn-reload{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3);padding:6px 14px;border-radius:20px;cursor:pointer;font-size:.78em;font-weight:600;transition:.2s}
+.btn-reload:hover{background:rgba(255,255,255,.28)}
+
+/* ===== CONFIG PANEL ===== */
+.config-panel{background:#fff;border-radius:0 0 14px 14px;margin:0 24px 14px;padding:16px 22px;box-shadow:var(--shadow);border:2px dashed #b3cde0}
+.config-panel h3{font-size:.9em;color:var(--primary);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.config-row{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:end}
+.config-input-wrap{display:flex;flex-direction:column;gap:4px}
+.config-input-wrap label{font-size:.75em;font-weight:600;color:#555;text-transform:uppercase;letter-spacing:.5px}
+.config-input{width:100%;padding:9px 14px;border:2px solid var(--border);border-radius:8px;font-size:.85em;font-family:inherit;transition:.2s}
+.config-input:focus{outline:none;border-color:var(--accent)}
+.btn-load{background:var(--accent);color:#fff;border:none;padding:9px 20px;border-radius:8px;cursor:pointer;font-size:.85em;font-weight:700;white-space:nowrap;transition:.2s}
+.btn-load:hover{background:#1f6fa3}
+.config-hint{font-size:.75em;color:#888;margin-top:6px}
+.config-hint code{background:#f0f4fa;padding:1px 5px;border-radius:4px;font-size:.92em;color:var(--accent)}
+.config-toggle{background:none;border:none;color:var(--accent);font-size:.78em;cursor:pointer;font-weight:600;padding:0;margin-bottom:2px}
+.config-toggle:hover{text-decoration:underline}
+
+/* ===== LOADING STATE ===== */
+.loading-overlay{display:none;position:fixed;inset:0;background:rgba(30,58,95,.6);z-index:500;align-items:center;justify-content:center;flex-direction:column;gap:16px}
+.loading-overlay.show{display:flex}
+.spinner{width:48px;height:48px;border:5px solid rgba(255,255,255,.2);border-top-color:#fff;border-radius:50%;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-text{color:#fff;font-size:1em;font-weight:600}
+.loading-sub{color:rgba(255,255,255,.7);font-size:.82em}
+
+/* ===== ERROR STATE ===== */
+.error-banner{background:#fdecea;border:2px solid var(--danger);border-radius:10px;padding:14px 18px;margin:0 24px 14px;display:none}
+.error-banner.show{display:flex;align-items:flex-start;gap:10px}
+.error-banner .icon{font-size:1.3em;flex-shrink:0;margin-top:1px}
+.error-banner .msg{font-size:.85em;color:#721c24;line-height:1.6}
+.error-banner .msg strong{display:block;margin-bottom:4px}
+
+/* ===== EMPTY STATE ===== */
+.empty-state{text-align:center;padding:60px 24px;color:#aaa;display:none}
+.empty-state.show{display:block}
+.empty-state .icon{font-size:3.5em;margin-bottom:12px}
+.empty-state p{font-size:.9em}
+
+/* ===== TABS ===== */
+.tabs{display:flex;gap:6px;padding:0 24px;flex-wrap:wrap;margin-bottom:-1px}
+.tab-btn{padding:9px 18px;border-radius:10px 10px 0 0;border:none;cursor:pointer;font-size:.85em;font-weight:600;background:#d4dff5;color:#1e3a5f;transition:.2s}
+.tab-btn.active{background:#fff;color:var(--accent);border-bottom:3px solid var(--accent);box-shadow:0 -2px 8px rgba(30,58,95,.07)}
+.tab-btn:hover:not(.active){background:#c3d1ec}
+.content{padding:0 24px 40px}
+.tab-panel{display:none;animation:fadeIn .3s}
+.tab-panel.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.section-title{font-size:.95em;font-weight:700;color:var(--primary);margin:18px 0 10px;display:flex;align-items:center;gap:8px}
+.section-title::after{content:'';flex:1;height:2px;background:var(--border);border-radius:2px}
+
+/* ===== STAT CARDS ===== */
+.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin:14px 0}
+.stat-card{background:#fff;border-radius:var(--radius);padding:16px 14px;box-shadow:var(--shadow);border-top:4px solid #ccc;cursor:pointer;transition:.2s}
+.stat-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(30,58,95,.14)}
+.stat-card .num{font-size:2em;font-weight:800}
+.stat-card .lbl{font-size:.75em;color:#777;margin-top:3px;line-height:1.4}
+.stat-card.ok{border-color:var(--success)}.stat-card.ok .num{color:var(--success)}
+.stat-card.warn{border-color:var(--warning)}.stat-card.warn .num{color:var(--warning)}
+.stat-card.danger{border-color:var(--danger)}.stat-card.danger .num{color:var(--danger)}
+.stat-card.info{border-color:var(--info)}.stat-card.info .num{color:var(--info)}
+.stat-card.total{border-color:var(--primary)}.stat-card.total .num{color:var(--primary)}
+
+/* ===== ITEM CARDS ===== */
+.items-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px;margin-top:8px}
+.item-card{background:#fff;border-radius:10px;border-left:5px solid #ccc;padding:13px 15px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.07);transition:.2s;position:relative}
+.item-card:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(30,58,95,.13)}
+.item-card.danger{border-color:var(--danger)}
+.item-card.warn{border-color:var(--warning)}
+.item-card.ok{border-color:var(--success)}
+.item-card.info{border-color:var(--info)}
+.item-label{font-size:.7em;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.item-card.danger .item-label{color:var(--danger)}
+.item-card.warn .item-label{color:var(--warning)}
+.item-card.ok .item-label{color:var(--success)}
+.item-card.info .item-label{color:var(--info)}
+.item-title{font-size:.88em;font-weight:600;color:#2c3e50;margin-bottom:7px;line-height:1.4}
+.item-meta{display:flex;gap:5px;flex-wrap:wrap;align-items:center}
+.click-hint{position:absolute;bottom:7px;right:10px;font-size:.68em;color:#ccc}
+
+/* ===== PILLS ===== */
+.pill{display:inline-block;padding:2px 8px;border-radius:20px;font-size:.72em;font-weight:600}
+.pill-ok{background:#d5f4e6;color:var(--success)}
+.pill-warn{background:#ffecd1;color:var(--warning)}
+.pill-danger{background:#ffd5d5;color:var(--danger)}
+.pill-info{background:#f0e2fa;color:var(--info)}
+.pill-gray{background:#eee;color:#777}
+.pill-new{background:var(--info);color:#fff}
+
+/* ===== TABLE ===== */
+.data-table{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden;box-shadow:var(--shadow);font-size:.83em}
+.data-table th{background:var(--primary);color:#fff;padding:10px 12px;text-align:left;font-weight:600;white-space:nowrap}
+.data-table td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:middle}
+.data-table tr:hover td{background:#f0f6ff}
+.data-table tr:last-child td{border:none}
+
+/* ===== BAR CHART ===== */
+.bar-wrap{background:#fff;border-radius:12px;padding:18px 22px;box-shadow:var(--shadow);margin:12px 0}
+.bar-chart{display:flex;flex-direction:column;gap:11px}
+.bar-row{display:flex;align-items:center;gap:8px}
+.bar-label{width:190px;font-size:.8em;color:#555;text-align:right;flex-shrink:0}
+.bar-track{flex:1;background:#edf2fb;border-radius:8px;height:24px;overflow:hidden}
+.bar-fill{height:100%;border-radius:8px;display:flex;align-items:center;padding-left:8px;font-size:.76em;font-weight:700;color:#fff;min-width:30px;transition:width 1s ease}
+.bar-val{width:46px;font-size:.8em;font-weight:700;text-align:right}
+
+/* ===== MODAL ===== */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(20,30,50,.55);z-index:999;backdrop-filter:blur(2px)}
+.modal-overlay.open{display:flex;align-items:center;justify-content:center}
+.modal{background:#fff;border-radius:18px;width:90%;max-width:760px;max-height:88vh;overflow-y:auto;box-shadow:0 12px 48px rgba(0,0,0,.22);animation:modalIn .25s}
+@keyframes modalIn{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
+.modal-header{padding:20px 24px 12px;display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2px solid var(--border);position:sticky;top:0;background:#fff;z-index:10}
+.modal-header h2{font-size:1em;color:var(--primary);font-weight:700;line-height:1.4;max-width:92%}
+.modal-close{background:none;border:none;font-size:1.5em;cursor:pointer;color:#aaa;padding:0 4px;line-height:1}
+.modal-close:hover{color:var(--danger)}
+.modal-body{padding:16px 24px 24px}
+.m-section{margin-bottom:16px}
+.m-label{font-size:.72em;text-transform:uppercase;letter-spacing:.7px;font-weight:700;color:#999;margin-bottom:6px}
+.m-2col{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.m-box{padding:12px 14px;border-radius:8px}
+.m-box.unit{background:#e8f6ee;border:2px solid #27ae60}
+.m-box.tp-ok{background:#e8f6ee;border:2px solid #27ae60}
+.m-box.tp-warn{background:#fff4e5;border:2px solid #e67e22}
+.m-box.tp-danger{background:#fdecea;border:2px solid var(--danger)}
+.m-box .g-title{font-size:.68em;font-weight:700;text-transform:uppercase;color:#999;margin-bottom:2px}
+.m-box .g-val{font-size:1.4em;font-weight:800}
+.m-box.unit .g-val{color:var(--success)}
+.m-box.tp-ok .g-val{color:var(--success)}
+.m-box.tp-warn .g-val{color:var(--warning)}
+.m-box.tp-danger .g-val{color:var(--danger)}
+.catatan-box{background:#fff8e1;border-left:4px solid var(--warning);padding:11px 13px;border-radius:7px;font-size:.86em;line-height:1.6}
+.catatan-box.danger{background:#fff0f0;border-color:var(--danger)}
+.catatan-box.ok{background:#e8f6ee;border-color:var(--success)}
+.list-box{background:#f0f7ff;border-left:4px solid var(--accent);padding:11px 13px;border-radius:7px;margin-top:6px}
+.list-box h4{font-size:.73em;font-weight:700;color:var(--accent);text-transform:uppercase;margin-bottom:6px}
+.list-box ul{padding-left:15px}
+.list-box ul li{font-size:.84em;color:#333;line-height:1.7}
+.docs-box{background:#e8f5e9;border-left:4px solid var(--success);padding:11px 13px;border-radius:7px;margin-top:6px}
+.docs-box h4{font-size:.73em;font-weight:700;color:var(--success);text-transform:uppercase;margin-bottom:6px}
+.docs-box ul{padding-left:15px}
+.docs-box ul li{font-size:.84em;color:#333;line-height:1.7}
+
+/* ===== LAST UPDATE INFO ===== */
+.update-info{background:#fff;border-radius:10px;padding:12px 16px;margin:12px 0;box-shadow:var(--shadow);display:flex;align-items:center;gap:10px;font-size:.82em}
+.update-info .icon{font-size:1.4em}
+.update-info .detail{color:#555;line-height:1.6}
+.update-info strong{color:var(--primary)}
+
+/* ===== PANDUAN BOX ===== */
+.guide-box{background:#fff;border-radius:12px;padding:20px 22px;margin:12px 0;box-shadow:var(--shadow)}
+.guide-box h3{font-size:.92em;color:var(--primary);margin-bottom:12px;font-weight:700}
+.guide-step{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)}
+.guide-step:last-child{border:none}
+.guide-num{width:28px;height:28px;background:var(--accent);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8em;font-weight:700;flex-shrink:0;margin-top:1px}
+.guide-content{flex:1}
+.guide-content strong{font-size:.88em;color:#2c3e50}
+.guide-content p{font-size:.82em;color:#666;margin-top:3px;line-height:1.6}
+.guide-content code{background:#f0f4fa;padding:1px 5px;border-radius:4px;font-size:.92em;color:var(--accent);word-break:break-all}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:680px){
+  .topbar,.tabs,.content{padding-left:12px;padding-right:12px}
+  .config-row{grid-template-columns:1fr}
+  .items-grid{grid-template-columns:1fr}
+  .m-2col{grid-template-columns:1fr}
+  .bar-label{width:110px}
+}
+</style>
+</head>
+<body>
+
+<!-- LOADING OVERLAY -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="spinner"></div>
+  <div class="loading-text">⏳ Mengambil data dari GitHub...</div>
+  <div class="loading-sub" id="loadingSub">Mohon tunggu sebentar</div>
+</div>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-left">
+    <h1>📊 Dashboard Zona Integritas FIPP UNNES 2026</h1>
+    <p id="lastUpdateLabel">Belum ada data — masukkan URL GitHub di bawah</p>
+  </div>
+  <div class="topbar-right">
+    <div class="status-dot" id="statusDot"></div>
+    <span class="status-text" id="statusText">Menunggu URL</span>
+    <button class="btn-reload" onclick="reloadData()" id="btnReload" style="display:none">🔄 Reload Data</button>
+  </div>
+</div>
+
+<!-- CONFIG PANEL -->
+<div class="config-panel" id="configPanel">
+  <h3>⚙️ Konfigurasi Sumber Data GitHub</h3>
+  <div class="config-row">
+    <div class="config-input-wrap">
+      <label>🔗 URL Raw GitHub File Excel (.xlsx)</label>
+      <input type="text" class="config-input" id="githubUrl" 
+        placeholder="https://github.com/username/repo/blob/main/namafile.xlsx"
+        value="">
+    </div>
+    <button class="btn-load" onclick="loadFromGitHub()">📥 Ambil Data</button>
+  </div>
+  <div class="config-hint">
+    Cukup paste URL biasa dari address bar GitHub: <code>https://github.com/<strong>username</strong>/<strong>repo</strong>/blob/main/<strong>namafile.xlsx</strong></code> — otomatis dikonversi!
+    &nbsp;•&nbsp; File harus bisa diakses publik
+  </div>
+  <button class="config-toggle" onclick="toggleGuide()">📖 Lihat panduan cara mendapatkan URL GitHub →</button>
+  <div id="guideBox" style="display:none;margin-top:10px">
+    <div class="guide-box" style="margin:0;border:2px solid #dce3ec">
+      <h3>📖 Cara Mendapatkan URL Raw GitHub</h3>
+      <div class="guide-step"><div class="guide-num">1</div><div class="guide-content"><strong>Upload file Excel ke GitHub</strong><p>Buka repo GitHub → klik <em>Add file</em> → <em>Upload files</em> → pilih file .xlsx → Commit</p></div></div>
+      <div class="guide-step"><div class="guide-num">2</div><div class="guide-content"><strong>Buka file di GitHub</strong><p>Klik nama file .xlsx di daftar file repository</p></div></div>
+      <div class="guide-step"><div class="guide-num">3</div><div class="guide-content"><strong>Klik tombol "Raw"</strong><p>Di halaman file, klik tombol <strong>Raw</strong> di kanan atas. URL yang muncul di browser itulah yang dipakai.</p></div></div>
+      <div class="guide-step"><div class="guide-num">4</div><div class="guide-content"><strong>Salin URL tersebut</strong><p>Contoh hasil: <code>https://raw.githubusercontent.com/hendradedi/zi-fipp/main/LKE-ZI-FIPP-2026.xlsx</code></p></div></div>
+      <div class="guide-step"><div class="guide-num">5</div><div class="guide-content"><strong>Tempel di kotak di atas → Klik Ambil Data</strong><p>Dashboard akan otomatis membaca file Excel dan menampilkan data. Setiap kali update Excel di GitHub, cukup klik 🔄 Reload.</p></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ERROR BANNER -->
+<div class="error-banner" id="errorBanner">
+  <div class="icon">❌</div>
+  <div class="msg">
+    <strong id="errorTitle">Gagal mengambil data</strong>
+    <span id="errorMsg"></span>
+  </div>
+</div>
+
+<!-- EMPTY STATE -->
+<div class="empty-state show" id="emptyState">
+  <div class="icon">📂</div>
+  <p>Masukkan URL raw GitHub file Excel LKE di atas untuk memulai.</p>
+  <p style="margin-top:6px;font-size:.8em;color:#bbb">Dashboard akan otomatis membaca dan menampilkan data.</p>
+</div>
+
+<!-- MAIN DASHBOARD (hidden until data loaded) -->
+<div id="mainDashboard" style="display:none">
+
+  <div class="update-info" id="updateInfo">
+    <div class="icon">🔄</div>
+    <div class="detail">
+      <strong id="infoSource">Sumber:</strong> — &nbsp;|&nbsp;
+      <strong>Diperbarui:</strong> <span id="infoTime">—</span> &nbsp;|&nbsp;
+      <strong>Total item terbaca:</strong> <span id="infoTotal">—</span> item
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="showTab('overview')">📊 Overview</button>
+    <button class="tab-btn" onclick="showTab('prioritas')">🚨 Prioritas</button>
+    <button class="tab-btn" onclick="showTab('gap')">⚠️ Gap Penilaian</button>
+    <button class="tab-btn" onclick="showTab('baik')">✅ Sudah Baik</button>
+    <button class="tab-btn" onclick="showTab('semua')">📋 Semua Data</button>
+    <button class="tab-btn" onclick="showTab('aksi')">🎯 Rencana Aksi</button>
+  </div>
+
+  <div class="content">
+
+    <!-- OVERVIEW -->
+    <div class="tab-panel active" id="tab-overview">
+      <div class="stats-row" id="statsRow"></div>
+      <div class="section-title">Progress per Komponen</div>
+      <div class="bar-wrap"><div class="bar-chart" id="barChart"></div></div>
+      <div class="section-title">Ringkasan Komponen</div>
+      <div style="overflow-x:auto">
+        <table class="data-table" id="komponenTable">
+          <thead><tr><th>Komponen</th><th>Bobot</th><th>Gap/OK</th><th>Catatan Utama</th></tr></thead>
+          <tbody id="komponenBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- PRIORITAS -->
+    <div class="tab-panel" id="tab-prioritas">
+      <div style="background:#fdecea;border-left:5px solid var(--danger);border-radius:10px;padding:12px 16px;margin:14px 0;font-size:.86em;color:#721c24">
+        🚨 Item dengan gap terbesar antara penilaian Unit dan Tim Penilai. Klik untuk detail & checklist dokumen.
+      </div>
+      <div class="items-grid" id="prioritasGrid"></div>
+    </div>
+
+    <!-- GAP -->
+    <div class="tab-panel" id="tab-gap">
+      <div style="background:#f3e5f5;border-left:5px solid var(--info);border-radius:10px;padding:12px 16px;margin:14px 0;font-size:.86em;color:#4a148c">
+        ⚠️ Semua item dengan perbedaan penilaian antara Unit dan Tim Penilai (TP).
+      </div>
+      <div class="items-grid" id="gapGrid"></div>
+    </div>
+
+    <!-- BAIK -->
+    <div class="tab-panel" id="tab-baik">
+      <div style="background:#e8f5e9;border-left:5px solid var(--success);border-radius:10px;padding:12px 16px;margin:14px 0;font-size:.86em;color:#1b5e20">
+        ✅ Item yang sudah dinilai baik oleh Tim Penilai. Pertahankan dan perbarui dokumen secara berkala.
+      </div>
+      <div class="items-grid" id="baikGrid"></div>
+    </div>
+
+    <!-- SEMUA DATA -->
+    <div class="tab-panel" id="tab-semua">
+      <div style="display:flex;gap:8px;margin:12px 0;flex-wrap:wrap;align-items:center">
+        <input type="text" id="searchInput" class="config-input" style="max-width:320px;padding:7px 12px" placeholder="🔍 Cari item...">
+        <select id="filterKomponen" class="config-input" style="max-width:200px;padding:7px 12px">
+          <option value="">Semua Komponen</option>
+        </select>
+        <select id="filterStatus" class="config-input" style="max-width:180px;padding:7px 12px">
+          <option value="">Semua Status</option>
+          <option value="gap">Ada Gap</option>
+          <option value="ok">Sudah Baik</option>
+        </select>
+      </div>
+      <div style="overflow-x:auto">
+        <table class="data-table">
+          <thead><tr><th>#</th><th>Komponen</th><th>Indikator</th><th>Jwb Unit</th><th>TP</th><th>Status</th><th>Catatan TP</th></tr></thead>
+          <tbody id="allDataBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- RENCANA AKSI -->
+    <div class="tab-panel" id="tab-aksi">
+      <div class="section-title">🎯 Rencana Aksi Otomatis dari Data Terbaru</div>
+      <div style="overflow-x:auto">
+        <table class="data-table">
+          <thead><tr><th>No</th><th>Komponen</th><th>Indikator</th><th>Gap</th><th>Catatan TP</th><th>Prioritas</th></tr></thead>
+          <tbody id="aksiBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeBg(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 id="modalTitle">Detail Item</h2>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<script>
+// ==========================================
+//  STATE
+// ==========================================
+let allData = [];
+let lastUrl = '';
+
+// ==========================================
+//  CONFIG TOGGLE
+// ==========================================
+function toggleGuide(){
+  const g = document.getElementById('guideBox');
+  g.style.display = g.style.display === 'none' ? 'block' : 'none';
+}
+
+// ==========================================
+//  LOAD DATA
+// ==========================================
+async function loadFromGitHub(urlOverride){
+  const url = urlOverride || document.getElementById('githubUrl').value.trim();
+  if(!url){ alert('Masukkan URL raw GitHub terlebih dahulu.'); return; }
+
+  // convert berbagai format GitHub URL → raw.githubusercontent.com
+  let rawUrl = url;
+  if(url.includes('github.com') && !url.includes('raw.githubusercontent.com')){
+    rawUrl = url
+      .replace('github.com','raw.githubusercontent.com')
+      .replace('/blob/','/')           // format lama: /blob/main/
+      .replace('/tree/','/')           // folder
+      .replace('/raw/refs/heads/','/')  // format baru GitHub: /raw/refs/heads/main/
+      .replace('/refs/heads/','/')     // sisa refs/heads
+  }
+  // handle: raw.githubusercontent.com/user/repo/refs/heads/main/file → /main/file
+  if(rawUrl.includes('raw.githubusercontent.com') && rawUrl.includes('/refs/heads/')){
+    rawUrl = rawUrl.replace('/refs/heads/','/')
+  }
+
+  lastUrl = rawUrl;
+  setStatus('loading','Mengambil data...');
+  showLoading('Mengambil file Excel dari GitHub...','URL: '+rawUrl.substring(0,60)+'...');
+  hideError(); hideEmptyState(); hideDashboard();
+
+  try {
+    const res = await fetch(rawUrl);
+    if(!res.ok) throw new Error(`HTTP ${res.status} — Pastikan URL benar dan file bisa diakses publik.`);
+    const ab = await res.arrayBuffer();
+    setLoadingSub('Membaca dan memproses data Excel...');
+    const wb = XLSX.read(ab, {type:'array'});
+    const sheet = wb.Sheets[wb.SheetNames[0]];
+    const rows  = XLSX.utils.sheet_to_json(sheet, {header:1, defval:''});
+    setLoadingSub('Membangun tampilan dashboard...');
+    parseAndRender(rows, rawUrl);
+    setStatus('ok','Data berhasil dimuat');
+    document.getElementById('btnReload').style.display='inline-block';
+  } catch(e){
+    setStatus('error','Gagal memuat data');
+    showError('Gagal mengambil data dari GitHub', e.message + ' — Periksa URL dan pastikan repo bersifat publik.');
+    showEmptyState();
+  } finally {
+    hideLoading();
+  }
+}
+
+async function reloadData(){
+  if(lastUrl) await loadFromGitHub(lastUrl);
+}
+
+// ==========================================
+//  PARSE EXCEL → allData
+// ==========================================
+function parseAndRender(rows, sourceUrl){
+  allData = [];
+
+  // Deteksi header row (baris yang mengandung "Jawaban")
+  let headerRow = -1;
+  for(let i=0;i<Math.min(10,rows.length);i++){
+    if(rows[i].some(c=>String(c).toLowerCase().includes('jawaban'))){ headerRow=i; break; }
+  }
+
+  // Mapping kolom dinamis berdasarkan header
+  const hdr = headerRow>=0 ? rows[headerRow] : [];
+  const colIdx = (keyword) => {
+    const k = keyword.toLowerCase();
+    for(let i=0;i<hdr.length;i++){
+      if(String(hdr[i]).toLowerCase().includes(k)) return i;
+    }
+    return -1;
+  };
+
+  const iJawabanUnit  = colIdx('jawaban');
+  const iNilaiUnit    = colIdx('nilai');
+  const iCatUnit      = colIdx('catatan/keterangan');
+  const iDocs         = colIdx('daftar evidence');
+  const iBobot        = colIdx('bobot');
+  const iPenjelasan   = colIdx('penjelasan');
+
+  // Cari kolom TP PTN (kolom 17+)
+  let iTPJawaban=-1, iTPCatatan=-1;
+  for(let i=0;i<hdr.length;i++){
+    const h = String(hdr[i]).toLowerCase();
+    if(h.includes('tp') && h.includes('ptn') && iTPJawaban<0) iTPJawaban=i;
+  }
+  // Cari jawaban TP dan catatan TP dari sub-header (baris setelah header)
+  let subHdr = headerRow>=0 ? rows[headerRow+1] : [];
+  // TP PTN kolom mulai dari ~18
+  let tpAnswerCol=-1, tpCatCol=-1;
+  for(let i=17;i<Math.min(subHdr.length,30);i++){
+    const h=String(subHdr[i]).toLowerCase();
+    if(h.includes('jawaban') && tpAnswerCol<0) tpAnswerCol=i;
+    if(h.includes('catatan') && tpCatCol<0) tpCatCol=i;
+  }
+
+  const dataStart = headerRow>=0 ? headerRow+2 : 2;
+  let currentKomponen='', currentSub='', currentNo='';
+
+  for(let r=dataStart;r<rows.length;r++){
+    const row=rows[r];
+    if(!row || row.every(c=>c==='' || c===null || c===undefined)) continue;
+
+    const col1=String(row[0]||'').trim();
+    const col2=String(row[1]||'').trim();
+    const col3=String(row[2]||'').trim();
+    const col4=String(row[3]||'').trim();
+    const col5=String(row[4]||'').trim();
+    const col6=String(row[5]||'').trim();
+
+    // Deteksi baris komponen (PENGUNGKIT, HASIL, dll)
+    if(col2 && (col2.toUpperCase()===col2 || ['A.','B.','I.','II.','III.','IV.','V.','VI.'].some(x=>col2.startsWith(x)))){
+      if(col3 && col3.toUpperCase()===col3 && col4==='') { currentKomponen=col3; continue; }
+      if(col3==='') { currentKomponen=col2; continue; }
+    }
+
+    // Baris data aktual — deteksi dari adanya konten di kolom indikator (col6) dan jawaban
+    const jawabanUnit = iJawabanUnit>=0 ? String(row[iJawabanUnit]||'').trim() : '';
+    const jawabanTP   = tpAnswerCol>=0  ? String(row[tpAnswerCol]||'').trim() : '';
+    const catatanTP   = tpCatCol>=0     ? String(row[tpCatCol]||'').trim() : '';
+    const catatanUnit = iCatUnit>=0     ? String(row[iCatUnit]||'').trim() : '';
+    const docsRaw     = iDocs>=0        ? String(row[iDocs]||'').trim() : '';
+    const bobot       = iBobot>=0       ? row[iBobot] : '';
+    const penjelasan  = iPenjelasan>=0  ? String(row[iPenjelasan]||'').trim() : '';
+
+    if(!col6 || !jawabanUnit) continue;
+
+    // Deteksi sub-komponen dari col1/col2/col3/col4/col5
+    const kode = [col1||col2||col3,col4,col5].filter(x=>x&&x!=='PARENT').join('.').replace(/\.+/g,'.');
+
+    // Parse docs
+    const docs = docsRaw.split('
+').map(d=>d.replace(/^\d+\.\s*/,'')).filter(d=>d.trim()&&!d.startsWith('http'));
+
+    // Deteksi komponen dari kolom 2/3/4
+    let komp = currentKomponen;
+    if(!komp){
+      if(String(row[3]||'').trim()) komp=String(row[3]||'').trim();
+    }
+
+    // Tentukan komponen utama
+    const r2=String(row[2]||'').trim();
+    const r3=String(row[3]||'').trim();
+    if(r2 && !r3){
+      if(['MANAJEMEN PERUBAHAN','PENATAAN TATALAKSANA','PENATAAN SISTEM MANAJEMEN SDM APARATUR',
+          'AKUNTABILITAS','PENGAWASAN','PENANGANAN BENTURAN KEPENTINGAN','PELAYANAN PUBLIK',
+          'PEMENUHAN','REFORMASI','HASIL'].some(k=>r2.toUpperCase().includes(k))){
+        currentKomponen=r2; continue;
+      }
+    }
+
+    const item = {
+      kode: kode||'—',
+      komponen: komp||'—',
+      indikator: col6,
+      jawabanUnit, jawabanTP, catatanTP, catatanUnit,
+      docs, bobot: bobot||'',
+      penjelasan
+    };
+
+    // Hitung gap
+    const gap = calcGap(jawabanUnit, jawabanTP);
+    item.gap = gap;
+    item.status = gap>0 ? (gap>=2?'danger':'warn') : 'ok';
+
+    allData.push(item);
+  }
+
+  // ===== Render semua panel =====
+  renderAll(sourceUrl);
+}
+
+function calcGap(unit, tp){
+  if(!unit||!tp) return 0;
+  const rank={'A':4,'B':3,'C':2,'D':1,'E':0,'YA':4,'TIDAK':0,'YES':4,'NO':0};
+  const u=rank[unit.toUpperCase().trim()];
+  const t=rank[tp.toUpperCase().trim()];
+  if(u!==undefined && t!==undefined) return u-t;
+  if(unit.trim()===tp.trim()) return 0;
+  return unit.trim()&&tp.trim()&&unit.trim()!==tp.trim() ? 1 : 0;
+}
+
+// ==========================================
+//  RENDER
+// ==========================================
+function renderAll(sourceUrl){
+  if(!allData.length){ showEmptyState(); return; }
+  showDashboard();
+
+  // Update info bar
+  document.getElementById('infoSource').textContent='Sumber: '+sourceUrl.split('/').slice(-1)[0];
+  document.getElementById('infoTime').textContent=new Date().toLocaleString('id-ID');
+  document.getElementById('infoTotal').textContent=allData.length;
+  document.getElementById('lastUpdateLabel').textContent=
+    'FIPP UNNES 2026 • Data: '+sourceUrl.split('/').slice(-1)[0]+' • Dimuat: '+new Date().toLocaleTimeString('id-ID');
+
+  const gap   = allData.filter(d=>d.gap>0);
+  const kritis= allData.filter(d=>d.gap>=2);
+  const ok    = allData.filter(d=>d.gap===0&&d.jawabanTP);
+  const hasCat= allData.filter(d=>d.catatanTP&&d.catatanTP.length>3);
+
+  // Stats
+  document.getElementById('statsRow').innerHTML=`
+    <div class="stat-card total" onclick="showTab('semua')"><div class="num">${allData.length}</div><div class="lbl">📋 Total Item</div></div>
+    <div class="stat-card danger" onclick="showTab('prioritas')"><div class="num">${kritis.length}</div><div class="lbl">🚨 Gap Kritis</div></div>
+    <div class="stat-card warn" onclick="showTab('gap')"><div class="num">${gap.length}</div><div class="lbl">⚠️ Ada Gap</div></div>
+    <div class="stat-card ok" onclick="showTab('baik')"><div class="num">${ok.length}</div><div class="lbl">✅ Sudah Baik</div></div>
+    <div class="stat-card info"><div class="num">${hasCat.length}</div><div class="lbl">📝 Ada Catatan TP</div></div>
+  `;
+
+  // Bar chart per komponen
+  const komponen = {};
+  allData.forEach(d=>{
+    const k=d.komponen||'Lainnya';
+    if(!komponen[k]) komponen[k]={total:0,gap:0};
+    komponen[k].total++;
+    if(d.gap>0) komponen[k].gap++;
+  });
+  const barColors={0:'#27ae60',1:'#e67e22'};
+  document.getElementById('barChart').innerHTML=Object.entries(komponen).map(([k,v])=>{
+    const pct=v.total>0?Math.round((1-v.gap/v.total)*100):100;
+    const color=pct>=80?'#27ae60':pct>=60?'#e67e22':'#c0392b';
+    const lbl=k.length>28?k.substring(0,28)+'…':k;
+    return `<div class="bar-row">
+      <div class="bar-label">${lbl}</div>
+      <div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${color}">${pct}%</div></div>
+      <div class="bar-val" style="color:${color}">${v.gap>0?'⚠️':'✅'}</div>
+    </div>`;
+  }).join('');
+
+  // Komponen table
+  document.getElementById('komponenBody').innerHTML=Object.entries(komponen).map(([k,v])=>{
+    const pct=v.total>0?Math.round((1-v.gap/v.total)*100):100;
+    const pill=pct>=80?'pill-ok':pct>=60?'pill-warn':'pill-danger';
+    const lbl=pct>=80?'✅ Baik':pct>=60?'⚠️ Perhatian':'🚨 Perlu Perbaikan';
+    return `<tr><td><strong>${k}</strong></td><td>${v.total} item</td><td><span class="pill ${pill}">${lbl}</span></td><td>${v.gap} item ada gap</td></tr>`;
+  }).join('');
+
+  // Prioritas (gap >= 2)
+  document.getElementById('prioritasGrid').innerHTML=kritis.length?
+    kritis.map((d,i)=>itemCard(d,i,'danger','🚨 Prioritas Kritis')).join(''):
+    '<p style="color:#aaa;padding:20px">Tidak ada item dengan gap kritis.</p>';
+
+  // Gap grid
+  document.getElementById('gapGrid').innerHTML=gap.length?
+    gap.map((d,i)=>itemCard(d,i,d.gap>=2?'danger':'warn','⚠️ Ada Gap')).join(''):
+    '<p style="color:#aaa;padding:20px">Tidak ada gap ditemukan.</p>';
+
+  // Baik grid
+  document.getElementById('baikGrid').innerHTML=ok.length?
+    ok.map((d,i)=>itemCard(d,i,'ok','✅ Sudah Baik')).join(''):
+    '<p style="color:#aaa;padding:20px">Belum ada item yang dinilai oleh TP.</p>';
+
+  // All data table
+  renderAllTable(allData);
+
+  // Rencana Aksi
+  document.getElementById('aksiBody').innerHTML=gap.map((d,i)=>{
+    const prior=d.gap>=2?'<span class="pill pill-danger">URGENT</span>':'<span class="pill pill-warn">Perlu</span>';
+    return `<tr>
+      <td>${i+1}</td>
+      <td>${d.komponen}</td>
+      <td style="max-width:220px">${d.indikator}</td>
+      <td><span class="pill pill-ok">${d.jawabanUnit}</span> → <span class="pill ${d.gap>=2?'pill-danger':'pill-warn'}">${d.jawabanTP}</span></td>
+      <td style="max-width:260px;font-size:.8em">${d.catatanTP||'—'}</td>
+      <td>${prior}</td>
+    </tr>`;
+  }).join('')||'<tr><td colspan="6" style="text-align:center;color:#aaa;padding:20px">Tidak ada gap — semua item sudah baik! 🎉</td></tr>';
+
+  // Filter komponen dropdown
+  const kompSet = [...new Set(allData.map(d=>d.komponen).filter(Boolean))];
+  const sel = document.getElementById('filterKomponen');
+  sel.innerHTML='<option value="">Semua Komponen</option>'+
+    kompSet.map(k=>`<option value="${k}">${k}</option>`).join('');
+
+  // Search & filter listeners
+  document.getElementById('searchInput').oninput=filterTable;
+  document.getElementById('filterKomponen').onchange=filterTable;
+  document.getElementById('filterStatus').onchange=filterTable;
+}
+
+function itemCard(d, idx, cls, labelText){
+  const tpClass = d.gap>=2?'pill-danger':d.gap>0?'pill-warn':'pill-ok';
+  const dataIdx = allData.indexOf(d);
+  return `<div class="item-card ${cls}" onclick="openModal(${dataIdx})">
+    <div class="item-label">${labelText} — ${d.komponen||'—'}</div>
+    <div class="item-title">${d.indikator}</div>
+    <div class="item-meta">
+      <span class="pill pill-ok">Unit: ${d.jawabanUnit}</span>
+      <span class="pill ${tpClass}">TP: ${d.jawabanTP||'—'}</span>
+      ${d.gap>0?`<span class="pill ${tpClass}">Gap: ${d.jawabanUnit}→${d.jawabanTP}</span>`:''}
+    </div>
+    <div class="click-hint">🔍 klik detail</div>
+  </div>`;
+}
+
+function renderAllTable(data){
+  document.getElementById('allDataBody').innerHTML=data.map((d,i)=>{
+    const pill=d.gap>=2?'pill-danger':d.gap>0?'pill-warn':'pill-ok';
+    const lbl=d.gap>=2?'🚨 Kritis':d.gap>0?'⚠️ Gap':'✅ Baik';
+    return `<tr onclick="openModal(${allData.indexOf(d)})" style="cursor:pointer">
+      <td>${i+1}</td>
+      <td style="max-width:140px;font-size:.8em">${d.komponen}</td>
+      <td style="max-width:240px">${d.indikator}</td>
+      <td><span class="pill pill-ok">${d.jawabanUnit}</span></td>
+      <td><span class="pill ${pill}">${d.jawabanTP||'—'}</span></td>
+      <td><span class="pill ${pill}">${lbl}</span></td>
+      <td style="max-width:200px;font-size:.78em;color:#666">${d.catatanTP?d.catatanTP.substring(0,80)+(d.catatanTP.length>80?'…':''):'—'}</td>
+    </tr>`;
+  }).join('');
+}
+
+function filterTable(){
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  const k = document.getElementById('filterKomponen').value;
+  const s = document.getElementById('filterStatus').value;
+  const filtered = allData.filter(d=>{
+    const matchQ = !q || d.indikator.toLowerCase().includes(q)||d.komponen.toLowerCase().includes(q)||d.catatanTP.toLowerCase().includes(q);
+    const matchK = !k || d.komponen===k;
+    const matchS = !s || (s==='gap'&&d.gap>0) || (s==='ok'&&d.gap===0);
+    return matchQ&&matchK&&matchS;
+  });
+  renderAllTable(filtered);
+}
+
+// ==========================================
+//  MODAL
+// ==========================================
+function openModal(idx){
+  const d = allData[idx];
+  if(!d) return;
+  document.getElementById('modalTitle').textContent = d.indikator;
+  const tpClass = d.gap>=2?'tp-danger':d.gap>0?'tp-warn':'tp-ok';
+  const catClass = d.gap>=2?'danger':d.gap>0?'':' ok';
+  let body=`
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px">
+      <span class="pill ${d.gap>=2?'pill-danger':d.gap>0?'pill-warn':'pill-ok'}">${d.gap>=2?'🚨 Kritis':d.gap>0?'⚠️ Ada Gap':'✅ Sudah Baik'}</span>
+      <span class="pill pill-gray">${d.komponen}</span>
+      ${d.bobot?`<span class="pill pill-gray">Bobot: ${d.bobot}</span>`:''}
+    </div>
+    <div class="m-section">
+      <div class="m-label">Perbandingan Penilaian</div>
+      <div class="m-2col">
+        <div class="m-box unit"><div class="g-title">Jawaban Unit FIPP</div><div class="g-val">${d.jawabanUnit}</div></div>
+        <div class="m-box ${tpClass}"><div class="g-title">Penilaian Tim Penilai (TP)</div><div class="g-val">${d.jawabanTP||'—'}</div></div>
+      </div>
+    </div>`;
+  if(d.catatanTP){
+    body+=`<div class="m-section">
+      <div class="m-label">💬 Catatan Tim Penilai</div>
+      <div class="catatan-box${catClass}">${d.catatanTP}</div>
+    </div>`;
+  }
+  if(d.docs&&d.docs.length){
+    body+=`<div class="m-section">
+      <div class="m-label">📁 Dokumen yang Sudah Ada</div>
+      <div class="docs-box"><h4>✅ Evidence tersedia</h4><ul>${d.docs.map(x=>`<li>${x}</li>`).join('')}</ul></div>
+    </div>`;
+  }
+  if(d.gap>0){
+    body+=`<div class="m-section">
+      <div class="m-label">🎯 Yang Perlu Dilengkapi</div>
+      <div class="list-box"><h4>📌 Tindak Lanjut</h4>
+      <p style="font-size:.85em;color:#333;line-height:1.7">
+        Jawaban Unit (<strong>${d.jawabanUnit}</strong>) lebih tinggi dari penilaian TP (<strong>${d.jawabanTP}</strong>). 
+        Cek catatan TP di atas dan lengkapi dokumen pendukung yang diminta. 
+        Pastikan seluruh administrasi (undangan, daftar hadir, notulensi, BA) tersedia sebagai evidence.
+      </p></div>
+    </div>`;
+  }
+  document.getElementById('modalBody').innerHTML=body;
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+
+function closeModal(){document.getElementById('modalOverlay').classList.remove('open');document.body.style.overflow='';}
+function closeBg(e){if(e.target===document.getElementById('modalOverlay'))closeModal();}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+
+// ==========================================
+//  TAB
+// ==========================================
+function showTab(id){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  const map={overview:0,prioritas:1,gap:2,baik:3,semua:4,aksi:5};
+  const btns=document.querySelectorAll('.tab-btn');
+  if(btns[map[id]]) btns[map[id]].classList.add('active');
+}
+
+// ==========================================
+//  UI HELPERS
+// ==========================================
+function setStatus(s,t){
+  const d=document.getElementById('statusDot');
+  const tx=document.getElementById('statusText');
+  d.className='status-dot '+s; tx.textContent=t;
+}
+function showLoading(t,s){
+  document.querySelector('.loading-text').textContent=t;
+  document.getElementById('loadingSub').textContent=s||'';
+  document.getElementById('loadingOverlay').classList.add('show');
+}
+function hideLoading(){document.getElementById('loadingOverlay').classList.remove('show');}
+function setLoadingSub(t){document.getElementById('loadingSub').textContent=t;}
+function showError(title,msg){
+  document.getElementById('errorTitle').textContent=title;
+  document.getElementById('errorMsg').textContent=msg;
+  document.getElementById('errorBanner').classList.add('show');
+}
+function hideError(){document.getElementById('errorBanner').classList.remove('show');}
+function showEmptyState(){document.getElementById('emptyState').classList.add('show');}
+function hideEmptyState(){document.getElementById('emptyState').classList.remove('show');}
+function showDashboard(){document.getElementById('mainDashboard').style.display='block';}
+function hideDashboard(){document.getElementById('mainDashboard').style.display='none';}
+
+
+// Auto-load dari localStorage atau URL param
+window.addEventListener('DOMContentLoaded', () => {
+  // Cek URL parameter ?src=...
+  const params = new URLSearchParams(window.location.search);
+  const srcParam = params.get('src');
+  if(srcParam){
+    document.getElementById('githubUrl').value = srcParam;
+    setTimeout(()=>loadFromGitHub(), 500);
+    return;
+  }
+  // Cek localStorage
+  try{
+    const saved = localStorage.getItem('zi_fipp_url');
+    if(saved){
+      document.getElementById('githubUrl').value = saved;
+      // tampilkan info bahwa URL lama ditemukan
+      const hint = document.createElement('div');
+      hint.style.cssText='background:#e8f5e9;border-radius:6px;padding:6px 12px;font-size:.78em;color:#1b5e20;margin-top:6px;display:flex;justify-content:space-between;align-items:center';
+      hint.innerHTML='✅ URL tersimpan dari sesi sebelumnya ditemukan. <button onclick="loadFromGitHub()" style="background:#27ae60;color:#fff;border:none;padding:3px 10px;border-radius:5px;cursor:pointer;font-size:.9em">Muat Otomatis</button>';
+      document.querySelector('.config-panel').appendChild(hint);
+    }
+  }catch(e){}
+});
+
+// Enter key pada input URL
+document.getElementById('githubUrl').addEventListener('keydown',e=>{
+  if(e.key==='Enter') loadFromGitHub();
+});
+</script>
+</body>
+</html>
