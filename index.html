@@ -1,865 +1,851 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard ZI FIPP UNNES 2026</title>
-<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-<style>
-:root{--primary:#1e3a5f;--accent:#2980b9;--success:#27ae60;--warning:#e67e22;--danger:#c0392b;--info:#8e44ad;--light:#f4f6f9;--white:#fff;--border:#dce3ec;--shadow:0 4px 18px rgba(30,58,95,.10);--radius:14px}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Segoe UI',system-ui,sans-serif;background:#eaf0fb;color:#222}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Executive Dashboard ZI FIPP UNNES 2026</title>
+    
+    <!-- External Libraries -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-/* ===== TOPBAR ===== */
-.topbar{background:linear-gradient(135deg,#1e3a5f,#2980b9);padding:14px 28px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,.2);position:sticky;top:0;z-index:200;flex-wrap:wrap;gap:8px}
-.topbar-left h1{color:#fff;font-size:1.1em;font-weight:700}
-.topbar-left p{color:rgba(255,255,255,.75);font-size:.76em;margin-top:2px}
-.topbar-right{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.status-dot{width:10px;height:10px;border-radius:50%;background:#95a5a6;flex-shrink:0;transition:.3s}
-.status-dot.ok{background:#27ae60;box-shadow:0 0 6px #27ae60}
-.status-dot.loading{background:#f39c12;animation:pulse 1s infinite}
-.status-dot.error{background:#c0392b}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-.status-text{font-size:.76em;color:rgba(255,255,255,.85)}
-.btn-reload{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3);padding:6px 14px;border-radius:20px;cursor:pointer;font-size:.78em;font-weight:600;transition:.2s}
-.btn-reload:hover{background:rgba(255,255,255,.28)}
+    <!-- Tailwind Configuration for Custom Colors -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        unnes: {
+                            blue: '#1e3a8a', // Deep Blue
+                            yellow: '#fbbf24', // UNNES Yellow
+                            light: '#f0f4f8'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'Segoe UI', 'system-ui', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
 
-/* ===== CONFIG PANEL ===== */
-.config-panel{background:#fff;border-radius:0 0 14px 14px;margin:0 24px 14px;padding:16px 22px;box-shadow:var(--shadow);border:2px dashed #b3cde0}
-.config-panel h3{font-size:.9em;color:var(--primary);margin-bottom:14px;display:flex;align-items:center;gap:6px}
-.config-row{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:end}
-.config-input-wrap{display:flex;flex-direction:column;gap:6px}
-.config-input-wrap label{font-size:.75em;font-weight:600;color:#555;text-transform:uppercase;letter-spacing:.5px}
-.config-input{width:100%;padding:9px 14px;border:2px solid var(--border);border-radius:8px;font-size:.85em;font-family:inherit;transition:.2s}
-.config-input:focus{outline:none;border-color:var(--accent)}
-.btn-load{background:var(--accent);color:#fff;border:none;padding:9px 20px;border-radius:8px;cursor:pointer;font-size:.85em;font-weight:700;white-space:nowrap;transition:.2s}
-.btn-load:hover{background:#1f6fa3}
-.config-hint{font-size:.75em;color:#888;margin-top:6px}
-.config-hint code{background:#f0f4fa;padding:1px 5px;border-radius:4px;font-size:.92em;color:var(--accent)}
-.config-toggle{background:none;border:none;color:var(--accent);font-size:.78em;cursor:pointer;font-weight:600;padding:0;margin-bottom:2px}
-.config-toggle:hover{text-decoration:underline}
-.divider {display: flex; align-items: center; text-align: center; margin: 16px 0; color: #999; font-size: 0.75em; font-weight: 700; text-transform: uppercase;}
-.divider::before, .divider::after {content: ''; flex: 1; border-bottom: 1px dashed var(--border);}
-.divider::before {margin-right: 12px;}
-.divider::after {margin-left: 12px;}
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        body { background-color: #f4f7fb; color: #1f2937; }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
 
-/* ===== LOADING STATE ===== */
-.loading-overlay{display:none;position:fixed;inset:0;background:rgba(30,58,95,.6);z-index:500;align-items:center;justify-content:center;flex-direction:column;gap:16px;backdrop-filter:blur(3px)}
-.loading-overlay.show{display:flex}
-.spinner{width:48px;height:48px;border:5px solid rgba(255,255,255,.2);border-top-color:#fff;border-radius:50%;animation:spin 1s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-.loading-text{color:#fff;font-size:1em;font-weight:600}
-.loading-sub{color:rgba(255,255,255,.7);font-size:.82em}
+        /* Loader */
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #1e3a8a;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-/* ===== ERROR STATE ===== */
-.error-banner{background:#fdecea;border:2px solid var(--danger);border-radius:10px;padding:14px 18px;margin:0 24px 14px;display:none}
-.error-banner.show{display:flex;align-items:flex-start;gap:10px}
-.error-banner .icon{font-size:1.3em;flex-shrink:0;margin-top:1px}
-.error-banner .msg{font-size:.85em;color:#721c24;line-height:1.6}
-.error-banner .msg strong{display:block;margin-bottom:4px}
+        /* Print Styles for Presentation */
+        @media print {
+            body { background: white; }
+            .no-print { display: none !important; }
+            .print-break { page-break-before: always; }
+            .shadow-sm, .shadow-md, .shadow-lg { box-shadow: none !important; border: 1px solid #e2e8f0; }
+        }
 
-/* ===== EMPTY STATE ===== */
-.empty-state{text-align:center;padding:60px 24px;color:#aaa;display:none}
-.empty-state.show{display:block}
-.empty-state .icon{font-size:3.5em;margin-bottom:12px}
-.empty-state p{font-size:.9em}
+        /* Glassmorphism for specific cards */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
 
-/* ===== TABS ===== */
-.tabs{display:flex;gap:6px;padding:0 24px;flex-wrap:wrap;margin-bottom:-1px}
-.tab-btn{padding:9px 18px;border-radius:10px 10px 0 0;border:none;cursor:pointer;font-size:.85em;font-weight:600;background:#d4dff5;color:#1e3a5f;transition:.2s}
-.tab-btn.active{background:#fff;color:var(--accent);border-bottom:3px solid var(--accent);box-shadow:0 -2px 8px rgba(30,58,95,.07)}
-.tab-btn:hover:not(.active){background:#c3d1ec}
-.content{padding:0 24px 40px}
-.tab-panel{display:none;animation:fadeIn .3s}
-.tab-panel.active{display:block}
-@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-.section-title{font-size:.95em;font-weight:700;color:var(--primary);margin:18px 0 10px;display:flex;align-items:center;gap:8px}
-.section-title::after{content:'';flex:1;height:2px;background:var(--border);border-radius:2px}
-
-/* ===== STAT CARDS ===== */
-.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin:14px 0}
-.stat-card{background:#fff;border-radius:var(--radius);padding:16px 14px;box-shadow:var(--shadow);border-top:4px solid #ccc;cursor:pointer;transition:.2s}
-.stat-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(30,58,95,.14)}
-.stat-card .num{font-size:2em;font-weight:800}
-.stat-card .lbl{font-size:.75em;color:#777;margin-top:3px;line-height:1.4}
-.stat-card.ok{border-color:var(--success)}.stat-card.ok .num{color:var(--success)}
-.stat-card.warn{border-color:var(--warning)}.stat-card.warn .num{color:var(--warning)}
-.stat-card.danger{border-color:var(--danger)}.stat-card.danger .num{color:var(--danger)}
-.stat-card.info{border-color:var(--info)}.stat-card.info .num{color:var(--info)}
-.stat-card.total{border-color:var(--primary)}.stat-card.total .num{color:var(--primary)}
-
-/* ===== ITEM CARDS ===== */
-.items-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px;margin-top:8px}
-.item-card{background:#fff;border-radius:10px;border-left:5px solid #ccc;padding:13px 15px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.07);transition:.2s;position:relative}
-.item-card:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(30,58,95,.13)}
-.item-card.danger{border-color:var(--danger)}
-.item-card.warn{border-color:var(--warning)}
-.item-card.ok{border-color:var(--success)}
-.item-card.info{border-color:var(--info)}
-.item-label{font-size:.7em;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
-.item-card.danger .item-label{color:var(--danger)}
-.item-card.warn .item-label{color:var(--warning)}
-.item-card.ok .item-label{color:var(--success)}
-.item-card.info .item-label{color:var(--info)}
-.item-title{font-size:.88em;font-weight:600;color:#2c3e50;margin-bottom:7px;line-height:1.4}
-.item-meta{display:flex;gap:5px;flex-wrap:wrap;align-items:center}
-.click-hint{position:absolute;bottom:7px;right:10px;font-size:.68em;color:#ccc}
-
-/* ===== PILLS ===== */
-.pill{display:inline-block;padding:2px 8px;border-radius:20px;font-size:.72em;font-weight:600}
-.pill-ok{background:#d5f4e6;color:var(--success)}
-.pill-warn{background:#ffecd1;color:var(--warning)}
-.pill-danger{background:#ffd5d5;color:var(--danger)}
-.pill-info{background:#f0e2fa;color:var(--info)}
-.pill-gray{background:#eee;color:#777}
-
-/* ===== TABLE ===== */
-.data-table{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden;box-shadow:var(--shadow);font-size:.83em}
-.data-table th{background:var(--primary);color:#fff;padding:10px 12px;text-align:left;font-weight:600;white-space:nowrap}
-.data-table td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:middle}
-.data-table tr:hover td{background:#f0f6ff}
-.data-table tr:last-child td{border:none}
-
-/* ===== BAR CHART ===== */
-.bar-wrap{background:#fff;border-radius:12px;padding:18px 22px;box-shadow:var(--shadow);margin:12px 0}
-.bar-chart{display:flex;flex-direction:column;gap:11px}
-.bar-row{display:flex;align-items:center;gap:8px}
-.bar-label{width:190px;font-size:.8em;color:#555;text-align:right;flex-shrink:0}
-.bar-track{flex:1;background:#edf2fb;border-radius:8px;height:24px;overflow:hidden}
-.bar-fill{height:100%;border-radius:8px;display:flex;align-items:center;padding-left:8px;font-size:.76em;font-weight:700;color:#fff;min-width:30px;transition:width 1s ease}
-.bar-val{width:46px;font-size:.8em;font-weight:700;text-align:right}
-
-/* ===== MODAL ===== */
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(20,30,50,.55);z-index:999;backdrop-filter:blur(2px)}
-.modal-overlay.open{display:flex;align-items:center;justify-content:center}
-.modal{background:#fff;border-radius:18px;width:90%;max-width:760px;max-height:88vh;overflow-y:auto;box-shadow:0 12px 48px rgba(0,0,0,.22);animation:modalIn .25s}
-@keyframes modalIn{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
-.modal-header{padding:20px 24px 12px;display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2px solid var(--border);position:sticky;top:0;background:#fff;z-index:10}
-.modal-header h2{font-size:1em;color:var(--primary);font-weight:700;line-height:1.4;max-width:92%}
-.modal-close{background:none;border:none;font-size:1.5em;cursor:pointer;color:#aaa;padding:0 4px;line-height:1}
-.modal-close:hover{color:var(--danger)}
-.modal-body{padding:16px 24px 24px}
-.m-section{margin-bottom:16px}
-.m-label{font-size:.72em;text-transform:uppercase;letter-spacing:.7px;font-weight:700;color:#999;margin-bottom:6px}
-.m-2col{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.m-box{padding:12px 14px;border-radius:8px}
-.m-box.unit{background:#e8f6ee;border:2px solid #27ae60}
-.m-box.tp-ok{background:#e8f6ee;border:2px solid #27ae60}
-.m-box.tp-warn{background:#fff4e5;border:2px solid #e67e22}
-.m-box.tp-danger{background:#fdecea;border:2px solid var(--danger)}
-.m-box .g-title{font-size:.68em;font-weight:700;text-transform:uppercase;color:#999;margin-bottom:2px}
-.m-box .g-val{font-size:1.4em;font-weight:800}
-.m-box.unit .g-val{color:var(--success)}
-.m-box.tp-ok .g-val{color:var(--success)}
-.m-box.tp-warn .g-val{color:var(--warning)}
-.m-box.tp-danger .g-val{color:var(--danger)}
-.catatan-box{background:#fff8e1;border-left:4px solid var(--warning);padding:11px 13px;border-radius:7px;font-size:.86em;line-height:1.6}
-.catatan-box.danger{background:#fff0f0;border-color:var(--danger)}
-.catatan-box.ok{background:#e8f6ee;border-color:var(--success)}
-.list-box{background:#f0f7ff;border-left:4px solid var(--accent);padding:11px 13px;border-radius:7px;margin-top:6px}
-.list-box h4{font-size:.73em;font-weight:700;color:var(--accent);text-transform:uppercase;margin-bottom:6px}
-.list-box ul{padding-left:15px}
-.list-box ul li{font-size:.84em;color:#333;line-height:1.7}
-.docs-box{background:#e8f5e9;border-left:4px solid var(--success);padding:11px 13px;border-radius:7px;margin-top:6px}
-.docs-box h4{font-size:.73em;font-weight:700;color:var(--success);text-transform:uppercase;margin-bottom:6px}
-.docs-box ul{padding-left:15px}
-.docs-box ul li{font-size:.84em;color:#333;line-height:1.7}
-
-/* ===== LAST UPDATE INFO ===== */
-.update-info{background:#fff;border-radius:10px;padding:12px 16px;margin:12px 0;box-shadow:var(--shadow);display:flex;align-items:center;gap:10px;font-size:.82em}
-.update-info .icon{font-size:1.4em}
-.update-info .detail{color:#555;line-height:1.6}
-.update-info strong{color:var(--primary)}
-
-/* ===== PANDUAN BOX ===== */
-.guide-box{background:#fff;border-radius:12px;padding:20px 22px;margin:12px 0;box-shadow:var(--shadow)}
-.guide-box h3{font-size:.92em;color:var(--primary);margin-bottom:12px;font-weight:700}
-.guide-step{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)}
-.guide-step:last-child{border:none}
-.guide-num{width:28px;height:28px;background:var(--accent);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8em;font-weight:700;flex-shrink:0;margin-top:1px}
-.guide-content{flex:1}
-.guide-content strong{font-size:.88em;color:#2c3e50}
-.guide-content p{font-size:.82em;color:#666;margin-top:3px;line-height:1.6}
-.guide-content code{background:#f0f4fa;padding:1px 5px;border-radius:4px;font-size:.92em;color:var(--accent);word-break:break-all}
-
-/* ===== RESPONSIVE ===== */
-@media(max-width:680px){
-  .topbar,.tabs,.content{padding-left:12px;padding-right:12px}
-  .config-row{grid-template-columns:1fr}
-  .items-grid{grid-template-columns:1fr}
-  .m-2col{grid-template-columns:1fr}
-  .bar-label{width:110px}
-}
-</style>
+        /* Animated Tab Transition */
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+        .tab-content.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
 </head>
-<body>
+<body class="font-sans text-gray-800 antialiased min-h-screen flex flex-col">
 
-<!-- LOADING OVERLAY -->
-<div class="loading-overlay" id="loadingOverlay">
-  <div class="spinner"></div>
-  <div class="loading-text">⏳ Memproses data...</div>
-  <div class="loading-sub" id="loadingSub">Mohon tunggu sebentar</div>
-</div>
-
-<!-- TOPBAR -->
-<div class="topbar">
-  <div class="topbar-left">
-    <h1>📊 Dashboard Zona Integritas FIPP UNNES 2026</h1>
-    <p id="lastUpdateLabel">Belum ada data — masukkan sumber data di bawah</p>
-  </div>
-  <div class="topbar-right">
-    <div class="status-dot" id="statusDot"></div>
-    <span class="status-text" id="statusText">Menunggu Data</span>
-    <button class="btn-reload" onclick="reloadData()" id="btnReload" style="display:none">🔄 Reload Data GitHub</button>
-  </div>
-</div>
-
-<!-- CONFIG PANEL -->
-<div class="config-panel" id="configPanel">
-  <h3>⚙️ Konfigurasi Sumber Data</h3>
-  
-  <div class="config-row">
-    <div class="config-input-wrap">
-      <label>📁 Opsi 1: Upload File Excel Lokal (.xlsx)</label>
-      <input type="file" class="config-input" id="localFileInput" accept=".xlsx, .xls" style="padding: 6px 14px;">
-    </div>
-    <button class="btn-load" onclick="loadFromFile()" style="background: var(--success);">📤 Upload & Baca</button>
-  </div>
-
-  <div class="divider">ATAU</div>
-
-  <div class="config-row">
-    <div class="config-input-wrap">
-      <label>🔗 Opsi 2: URL Raw GitHub File Excel (.xlsx)</label>
-      <input type="text" class="config-input" id="githubUrl" 
-        placeholder="https://github.com/username/repo/blob/main/namafile.xlsx"
-        value="">
-    </div>
-    <button class="btn-load" onclick="loadFromGitHub()">📥 Ambil dari URL</button>
-  </div>
-  
-  <div class="config-hint">
-    Untuk URL GitHub: Cukup paste URL biasa dari address bar GitHub — otomatis dikonversi! File harus bisa diakses publik.
-  </div>
-  
-  <button class="config-toggle" onclick="toggleGuide()">📖 Lihat panduan cara mendapatkan URL GitHub →</button>
-  <div id="guideBox" style="display:none;margin-top:10px">
-    <div class="guide-box" style="margin:0;border:2px solid #dce3ec">
-      <h3>📖 Cara Mendapatkan URL Raw GitHub</h3>
-      <div class="guide-step"><div class="guide-num">1</div><div class="guide-content"><strong>Upload file Excel ke GitHub</strong><p>Buka repo GitHub → klik <em>Add file</em> → <em>Upload files</em> → pilih file .xlsx → Commit</p></div></div>
-      <div class="guide-step"><div class="guide-num">2</div><div class="guide-content"><strong>Buka file di GitHub</strong><p>Klik nama file .xlsx di daftar file repository</p></div></div>
-      <div class="guide-step"><div class="guide-num">3</div><div class="guide-content"><strong>Klik tombol "Raw"</strong><p>Di halaman file, klik tombol <strong>Raw</strong> di kanan atas. URL yang muncul di browser itulah yang dipakai.</p></div></div>
-      <div class="guide-step"><div class="guide-num">4</div><div class="guide-content"><strong>Salin URL tersebut</strong><p>Contoh hasil: <code>https://raw.githubusercontent.com/username/repo/main/file.xlsx</code></p></div></div>
-    </div>
-  </div>
-</div>
-
-<!-- ERROR BANNER -->
-<div class="error-banner" id="errorBanner">
-  <div class="icon">❌</div>
-  <div class="msg">
-    <strong id="errorTitle">Gagal mengambil data</strong>
-    <span id="errorMsg"></span>
-  </div>
-</div>
-
-<!-- EMPTY STATE -->
-<div class="empty-state show" id="emptyState">
-  <div class="icon">📂</div>
-  <p>Pilih file Excel lokal atau masukkan URL GitHub di atas untuk memulai.</p>
-  <p style="margin-top:6px;font-size:.8em;color:#bbb">Dashboard akan otomatis membaca dan menampilkan data LKE.</p>
-</div>
-
-<!-- MAIN DASHBOARD (hidden until data loaded) -->
-<div id="mainDashboard" style="display:none">
-
-  <div class="update-info" id="updateInfo">
-    <div class="icon">🔄</div>
-    <div class="detail">
-      <strong id="infoSource">Sumber:</strong> — &nbsp;|&nbsp;
-      <strong>Diperbarui:</strong> <span id="infoTime">—</span> &nbsp;|&nbsp;
-      <strong>Total item terbaca:</strong> <span id="infoTotal">—</span> item
-    </div>
-  </div>
-
-  <div class="tabs">
-    <button class="tab-btn active" onclick="showTab('overview')">📊 Overview</button>
-    <button class="tab-btn" onclick="showTab('prioritas')">🚨 Prioritas</button>
-    <button class="tab-btn" onclick="showTab('gap')">⚠️ Gap Penilaian</button>
-    <button class="tab-btn" onclick="showTab('baik')">✅ Sudah Baik</button>
-    <button class="tab-btn" onclick="showTab('semua')">📋 Semua Data</button>
-    <button class="tab-btn" onclick="showTab('aksi')">🎯 Rencana Aksi</button>
-  </div>
-
-  <div class="content">
-
-    <!-- OVERVIEW -->
-    <div class="tab-panel active" id="tab-overview">
-      <div class="stats-row" id="statsRow"></div>
-      <div class="section-title">Progress per Komponen</div>
-      <div class="bar-wrap"><div class="bar-chart" id="barChart"></div></div>
-      <div class="section-title">Ringkasan Komponen</div>
-      <div style="overflow-x:auto">
-        <table class="data-table" id="komponenTable">
-          <thead><tr><th>Komponen</th><th>Bobot</th><th>Gap/OK</th><th>Catatan Utama</th></tr></thead>
-          <tbody id="komponenBody"></tbody>
-        </table>
-      </div>
+    <!-- OVERLAY LOADER -->
+    <div id="loadingOverlay" class="fixed inset-0 bg-blue-900 bg-opacity-80 z-50 hidden flex-col justify-center items-center text-white backdrop-blur-sm transition-opacity">
+        <div class="loader mb-4"></div>
+        <h2 class="text-xl font-bold tracking-wide" id="loadingText">Menganalisis Data Evaluasi...</h2>
+        <p class="text-blue-200 mt-2 text-sm" id="loadingSubText">Mengekstrak Area Perubahan dan Catatan Penilai</p>
     </div>
 
-    <!-- PRIORITAS -->
-    <div class="tab-panel" id="tab-prioritas">
-      <div style="background:#fdecea;border-left:5px solid var(--danger);border-radius:10px;padding:12px 16px;margin:14px 0;font-size:.86em;color:#721c24">
-        🚨 Item dengan gap terbesar antara penilaian Unit dan Tim Penilai. Klik untuk detail & checklist dokumen.
-      </div>
-      <div class="items-grid" id="prioritasGrid"></div>
-    </div>
+    <!-- HEADER / TOPBAR -->
+    <header class="bg-gradient-to-r from-unnes-blue to-blue-700 text-white shadow-lg sticky top-0 z-40 print:relative print:bg-white print:text-black">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-4">
+                <div class="p-2 bg-white rounded-lg shadow-inner print:hidden">
+                    <svg class="w-8 h-8 text-unnes-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                </div>
+                <div>
+                    <h1 class="text-xl md:text-2xl font-bold tracking-tight">Executive Dashboard ZI FIPP</h1>
+                    <p class="text-xs md:text-sm text-blue-200 font-medium print:text-gray-600" id="headerSubtitle">Menunggu Unggahan Data Evaluasi LKE</p>
+                </div>
+            </div>
+            <div class="flex items-center space-x-3 no-print">
+                <span id="statusBadge" class="px-3 py-1 bg-blue-800 bg-opacity-50 border border-blue-400 rounded-full text-xs font-semibold flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-yellow-400 animate-pulse"></span>
+                    Menunggu Data
+                </span>
+                <button onclick="window.print()" class="p-2 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-lg transition" title="Cetak/Simpan PDF">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+                </button>
+            </div>
+        </div>
+    </header>
 
-    <!-- GAP -->
-    <div class="tab-panel" id="tab-gap">
-      <div style="background:#f3e5f5;border-left:5px solid var(--info);border-radius:10px;padding:12px 16px;margin:14px 0;font-size:.86em;color:#4a148c">
-        ⚠️ Semua item dengan perbedaan penilaian antara Unit dan Tim Penilai (TP).
-      </div>
-      <div class="items-grid" id="gapGrid"></div>
-    </div>
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+        
+        <!-- DATA INPUT SECTION -->
+        <section id="inputSection" class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 mb-8 no-print transition-all duration-500 relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-32 h-32 bg-blue-50 rounded-bl-full -z-10"></div>
+            <div class="flex justify-between items-start mb-6">
+                <div>
+                    <h2 class="text-lg font-bold text-gray-800 flex items-center gap-2">
+                        <svg class="w-5 h-5 text-unnes-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"></path></svg>
+                        Sumber Data LKE
+                    </h2>
+                    <p class="text-sm text-gray-500 mt-1">Unggah file Excel Evaluasi Mandiri/TP untuk membangun dashboard interaktif.</p>
+                </div>
+                <button id="btnToggleInput" class="text-gray-400 hover:text-gray-700 hidden" onclick="toggleInputSection()">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+            </div>
 
-    <!-- BAIK -->
-    <div class="tab-panel" id="tab-baik">
-      <div style="background:#e8f5e9;border-left:5px solid var(--success);border-radius:10px;padding:12px 16px;margin:14px 0;font-size:.86em;color:#1b5e20">
-        ✅ Item yang sudah dinilai baik oleh Tim Penilai. Pertahankan dan perbarui dokumen secara berkala.
-      </div>
-      <div class="items-grid" id="baikGrid"></div>
-    </div>
+            <div id="inputControls" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Opsi 1: File Lokal -->
+                <div class="p-5 bg-gray-50 rounded-xl border border-dashed border-gray-300 hover:border-unnes-blue transition">
+                    <label class="block text-sm font-semibold text-gray-700 mb-3 uppercase tracking-wide">📁 Opsi 1: File Lokal (.xlsx)</label>
+                    <input type="file" id="localFileInput" accept=".xlsx, .xls" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2.5 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-unnes-blue hover:file:bg-blue-100 cursor-pointer mb-4">
+                    <button onclick="loadFromFile()" class="w-full bg-unnes-blue hover:bg-blue-800 text-white font-medium py-2.5 px-4 rounded-lg transition shadow-md flex justify-center items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+                        Proses File
+                    </button>
+                </div>
 
-    <!-- SEMUA DATA -->
-    <div class="tab-panel" id="tab-semua">
-      <div style="display:flex;gap:8px;margin:12px 0;flex-wrap:wrap;align-items:center">
-        <input type="text" id="searchInput" class="config-input" style="max-width:320px;padding:7px 12px" placeholder="🔍 Cari item...">
-        <select id="filterKomponen" class="config-input" style="max-width:200px;padding:7px 12px">
-          <option value="">Semua Komponen</option>
-        </select>
-        <select id="filterStatus" class="config-input" style="max-width:180px;padding:7px 12px">
-          <option value="">Semua Status</option>
-          <option value="gap">Ada Gap</option>
-          <option value="ok">Sudah Baik</option>
-        </select>
-      </div>
-      <div style="overflow-x:auto">
-        <table class="data-table">
-          <thead><tr><th>#</th><th>Komponen</th><th>Indikator</th><th>Jwb Unit</th><th>TP</th><th>Status</th><th>Catatan TP</th></tr></thead>
-          <tbody id="allDataBody"></tbody>
-        </table>
-      </div>
-    </div>
+                <!-- Opsi 2: GitHub URL -->
+                <div class="p-5 bg-gray-50 rounded-xl border border-dashed border-gray-300 hover:border-unnes-blue transition">
+                    <label class="block text-sm font-semibold text-gray-700 mb-3 uppercase tracking-wide">🔗 Opsi 2: Tautan URL GitHub</label>
+                    <input type="text" id="githubUrl" placeholder="https://github.com/username/repo/blob/main/file.xlsx" class="block w-full px-4 py-2.5 rounded-lg border border-gray-300 text-sm focus:ring-2 focus:ring-unnes-blue focus:border-unnes-blue mb-4 transition">
+                    <button onclick="loadFromGitHub()" class="w-full bg-white border-2 border-unnes-blue text-unnes-blue hover:bg-blue-50 font-medium py-2 px-4 rounded-lg transition shadow-sm flex justify-center items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
+                        Tarik Data dari URL
+                    </button>
+                </div>
+            </div>
+            <div id="urlHint" class="mt-4 hidden p-3 bg-green-50 border border-green-200 rounded-lg flex justify-between items-center text-sm text-green-800">
+                <span>✅ URL sebelumnya ditemukan di sistem.</span>
+                <button onclick="loadFromGitHub()" class="font-bold underline hover:text-green-600">Muat Ulang URL</button>
+            </div>
+        </section>
 
-    <!-- RENCANA AKSI -->
-    <div class="tab-panel" id="tab-aksi">
-      <div class="section-title">🎯 Rencana Aksi Otomatis dari Data Terbaru</div>
-      <div style="overflow-x:auto">
-        <table class="data-table">
-          <thead><tr><th>No</th><th>Komponen</th><th>Indikator</th><th>Gap</th><th>Catatan TP</th><th>Prioritas</th></tr></thead>
-          <tbody id="aksiBody"></tbody>
-        </table>
-      </div>
-    </div>
+        <!-- EMPTY STATE -->
+        <div id="emptyState" class="text-center py-20 px-4">
+            <div class="inline-flex items-center justify-center w-24 h-24 rounded-full bg-blue-100 text-unnes-blue mb-6">
+                <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+            </div>
+            <h2 class="text-2xl font-bold text-gray-800 mb-2">Belum Ada Data LKE</h2>
+            <p class="text-gray-500 max-w-md mx-auto">Silakan unggah file Excel ZI FIPP atau masukkan tautan GitHub untuk menampilkan metrik dan analisis eksekutif.</p>
+        </div>
 
-  </div>
-</div>
+        <!-- DASHBOARD WORKSPACE -->
+        <div id="dashboardWorkspace" class="hidden">
+            
+            <!-- EXECUTIVE SUMMARY NARRATIVE -->
+            <div class="mb-8 p-6 glass-card rounded-2xl shadow-sm border-l-4 border-unnes-blue relative overflow-hidden">
+                <div class="absolute top-4 right-4 text-blue-100 opacity-20">
+                    <svg class="w-24 h-24" fill="currentColor" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg>
+                </div>
+                <h3 class="text-sm font-bold tracking-widest text-unnes-blue uppercase mb-2">Ringkasan Eksekutif</h3>
+                <p id="executiveSummaryText" class="text-gray-700 text-lg leading-relaxed relative z-10 font-medium"></p>
+            </div>
 
-<!-- MODAL -->
-<div class="modal-overlay" id="modalOverlay" onclick="closeBg(event)">
-  <div class="modal">
-    <div class="modal-header">
-      <h2 id="modalTitle">Detail Item</h2>
-      <button class="modal-close" onclick="closeModal()">✕</button>
-    </div>
-    <div class="modal-body" id="modalBody"></div>
-  </div>
-</div>
+            <!-- TAB NAVIGATION -->
+            <div class="flex space-x-1 border-b border-gray-200 mb-6 overflow-x-auto no-print">
+                <button onclick="switchTab('ringkasan')" id="btn-tab-ringkasan" class="tab-button px-5 py-3 text-sm font-bold text-unnes-blue border-b-2 border-unnes-blue whitespace-nowrap">📊 Ringkasan Pimpinan</button>
+                <button onclick="switchTab('tindaklanjut')" id="btn-tab-tindaklanjut" class="tab-button px-5 py-3 text-sm font-medium text-gray-500 hover:text-gray-700 whitespace-nowrap">🎯 Rencana Tindak Lanjut</button>
+                <button onclick="switchTab('areaperubahan')" id="btn-tab-areaperubahan" class="tab-button px-5 py-3 text-sm font-medium text-gray-500 hover:text-gray-700 whitespace-nowrap">📁 Detail Area Perubahan</button>
+                <button onclick="switchTab('datalengkap')" id="btn-tab-datalengkap" class="tab-button px-5 py-3 text-sm font-medium text-gray-500 hover:text-gray-700 whitespace-nowrap">📋 Seluruh Data</button>
+            </div>
+
+            <!-- TAB: RINGKASAN PIMPINAN -->
+            <div id="tab-ringkasan" class="tab-content active">
+                
+                <!-- KPI CARDS -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                    <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center text-center">
+                        <div class="p-3 rounded-full bg-blue-50 text-unnes-blue mb-3">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
+                        </div>
+                        <p class="text-xs text-gray-500 font-bold uppercase tracking-wide">Total Indikator</p>
+                        <h3 class="text-3xl font-extrabold text-gray-800 mt-1" id="kpiTotal">0</h3>
+                    </div>
+                    
+                    <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center text-center">
+                        <div class="p-3 rounded-full bg-green-50 text-green-600 mb-3">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        </div>
+                        <p class="text-xs text-gray-500 font-bold uppercase tracking-wide">Telah Sesuai (TP)</p>
+                        <h3 class="text-3xl font-extrabold text-green-600 mt-1" id="kpiSesuai">0</h3>
+                    </div>
+
+                    <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center text-center relative overflow-hidden">
+                        <div class="p-3 rounded-full bg-orange-50 text-orange-500 mb-3 relative z-10">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                        </div>
+                        <p class="text-xs text-gray-500 font-bold uppercase tracking-wide relative z-10">Perlu Perbaikan (Gap)</p>
+                        <h3 class="text-3xl font-extrabold text-orange-600 mt-1 relative z-10" id="kpiGap">0</h3>
+                        <div class="absolute bottom-0 left-0 w-full h-1 bg-orange-400"></div>
+                    </div>
+
+                    <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center text-center">
+                        <div class="p-3 rounded-full bg-purple-50 text-purple-600 mb-3">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
+                        </div>
+                        <p class="text-xs text-gray-500 font-bold uppercase tracking-wide">Ada Catatan TP</p>
+                        <h3 class="text-3xl font-extrabold text-purple-600 mt-1" id="kpiCatatan">0</h3>
+                    </div>
+                </div>
+
+                <!-- CHARTS SECTION -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8 print-break">
+                    <!-- Radar Chart -->
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200">
+                        <h3 class="text-base font-bold text-gray-800 mb-1 text-center">Analisis Kesiapan 6 Area Perubahan</h3>
+                        <p class="text-xs text-gray-500 text-center mb-6">Perbandingan persentase pemenuhan Unit vs Penilaian TP</p>
+                        <div class="relative h-72 w-full">
+                            <canvas id="radarChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Bar Chart -->
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200">
+                        <h3 class="text-base font-bold text-gray-800 mb-1 text-center">Distribusi Status per Area</h3>
+                        <p class="text-xs text-gray-500 text-center mb-6">Jumlah indikator Sesuai (Hijau) vs Gap (Oranye)</p>
+                        <div class="relative h-72 w-full">
+                            <canvas id="barChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB: TINDAK LANJUT -->
+            <div id="tab-tindaklanjut" class="tab-content">
+                <div class="bg-orange-50 border-l-4 border-orange-500 p-4 rounded-r-lg mb-6">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <svg class="h-5 w-5 text-orange-400" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+                        </div>
+                        <div class="ml-3">
+                            <h3 class="text-sm font-medium text-orange-800">Prioritas Perbaikan Utama</h3>
+                            <div class="mt-1 text-sm text-orange-700">
+                                Daftar di bawah ini difilter secara khusus untuk menampilkan indikator yang <strong>terdapat selisih nilai (Gap)</strong> ATAU <strong>mendapatkan catatan spesifik</strong> dari Tim Penilai. Fokuskan rapat pimpinan untuk menuntaskan daftar ini.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="actionCardsContainer" class="space-y-4">
+                    <!-- Action Cards will be injected here -->
+                </div>
+            </div>
+
+            <!-- TAB: AREA PERUBAHAN -->
+            <div id="tab-areaperubahan" class="tab-content">
+                <div class="mb-4 text-sm text-gray-500 font-medium px-2">Klik pada area untuk melihat detail indikator dan penilaiannya.</div>
+                <div id="areaAccordionContainer" class="space-y-4">
+                    <!-- Accordions injected here -->
+                </div>
+            </div>
+
+            <!-- TAB: DATA LENGKAP -->
+            <div id="tab-datalengkap" class="tab-content">
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+                    <div class="p-4 border-b border-gray-200 bg-gray-50 flex flex-col md:flex-row gap-4 justify-between items-center no-print">
+                        <div class="relative w-full md:w-1/3">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <svg class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                            </div>
+                            <input type="text" id="searchInput" onkeyup="filterFullTable()" placeholder="Cari indikator atau catatan..." class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-unnes-blue focus:border-unnes-blue">
+                        </div>
+                        <div class="flex gap-2 w-full md:w-auto">
+                            <select id="filterArea" onchange="filterFullTable()" class="block w-full border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-unnes-blue">
+                                <option value="">Semua Area</option>
+                            </select>
+                            <select id="filterGap" onchange="filterFullTable()" class="block w-full border border-gray-300 rounded-lg text-sm px-3 py-2 focus:ring-unnes-blue">
+                                <option value="">Semua Status</option>
+                                <option value="gap">Hanya Ada Gap</option>
+                                <option value="ok">Sesuai/Baik</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200 text-sm">
+                            <thead class="bg-unnes-blue text-white">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3 text-left font-semibold uppercase tracking-wider w-1/4">Area / Sub Area</th>
+                                    <th scope="col" class="px-6 py-3 text-left font-semibold uppercase tracking-wider w-1/3">Indikator</th>
+                                    <th scope="col" class="px-6 py-3 text-center font-semibold uppercase tracking-wider">Unit</th>
+                                    <th scope="col" class="px-6 py-3 text-center font-semibold uppercase tracking-wider">TP</th>
+                                    <th scope="col" class="px-6 py-3 text-left font-semibold uppercase tracking-wider">Catatan TP</th>
+                                </tr>
+                            </thead>
+                            <tbody id="fullTableBody" class="bg-white divide-y divide-gray-200">
+                                <!-- Table rows -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
 
 <script>
 // ==========================================
-//  STATE
+//  STATE MANAGEMENT
 // ==========================================
 let allData = [];
-let lastUrl = '';
+let chartInstances = {};
+let groupedData = {};
+
+// Rank Dictionary for gap calculation
+const RANK_VALS = {'A':4,'B':3,'C':2,'D':1,'E':0,'YA':4,'TIDAK':0,'YES':4,'NO':0};
 
 // ==========================================
-//  CONFIG TOGGLE
+//  UI & TAB LOGIC
 // ==========================================
-function toggleGuide(){
-  const g = document.getElementById('guideBox');
-  g.style.display = g.style.display === 'none' ? 'block' : 'none';
+function switchTab(tabId) {
+    // Hide all tabs
+    document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.tab-button').forEach(el => {
+        el.classList.remove('text-unnes-blue', 'border-b-2', 'border-unnes-blue', 'font-bold');
+        el.classList.add('text-gray-500', 'font-medium');
+    });
+
+    // Show selected
+    document.getElementById('tab-' + tabId).classList.add('active');
+    const activeBtn = document.getElementById('btn-tab-' + tabId);
+    activeBtn.classList.remove('text-gray-500', 'font-medium');
+    activeBtn.classList.add('text-unnes-blue', 'border-b-2', 'border-unnes-blue', 'font-bold');
+}
+
+function toggleInputSection() {
+    const el = document.getElementById('inputControls');
+    const btn = document.getElementById('btnToggleInput');
+    if (el.style.display === 'none') {
+        el.style.display = 'grid';
+        btn.innerHTML = `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path></svg>`;
+    } else {
+        el.style.display = 'none';
+        btn.innerHTML = `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>`;
+    }
+}
+
+function showLoading(title, sub) {
+    document.getElementById('loadingText').textContent = title;
+    document.getElementById('loadingSubText').textContent = sub;
+    document.getElementById('loadingOverlay').classList.remove('hidden');
+    document.getElementById('loadingOverlay').classList.add('flex');
+}
+function hideLoading() {
+    document.getElementById('loadingOverlay').classList.add('hidden');
+    document.getElementById('loadingOverlay').classList.remove('flex');
 }
 
 // ==========================================
-//  LOAD DATA: LOKAL FILE
+//  DATA FETCHING (LOCAL & GITHUB)
 // ==========================================
+window.addEventListener('DOMContentLoaded', () => {
+    const saved = localStorage.getItem('zi_fipp_url');
+    if(saved){
+        document.getElementById('githubUrl').value = saved;
+        document.getElementById('urlHint').classList.remove('hidden');
+    }
+});
+
 async function loadFromFile(){
-  const fileInput = document.getElementById('localFileInput');
-  if(!fileInput.files || fileInput.files.length === 0){ 
-    alert('Pilih file Excel terlebih dahulu pada Opsi 1.'); 
-    return; 
-  }
+    const fileInput = document.getElementById('localFileInput');
+    if(!fileInput.files.length) return alert('Pilih file Excel terlebih dahulu.');
+    
+    showLoading('Membaca File Lokal...', fileInput.files[0].name);
+    try {
+        const reader = new FileReader();
+        reader.onload = e => processExcelData(e.target.result, 'File Lokal: ' + fileInput.files[0].name);
+        reader.onerror = () => { hideLoading(); alert('Gagal membaca file.'); };
+        reader.readAsArrayBuffer(fileInput.files[0]);
+    } catch(err) { hideLoading(); alert('Error sistem: ' + err.message); }
+}
 
-  const file = fileInput.files[0];
-  lastUrl = ''; // Clear URL state since we are using local
-  
-  setStatus('loading','Membaca file lokal...');
-  showLoading('Membaca file Excel lokal...','Nama File: '+file.name);
-  hideError(); hideEmptyState(); hideDashboard();
+async function loadFromGitHub(){
+    let url = document.getElementById('githubUrl').value.trim();
+    if(!url) return alert('Masukkan URL GitHub.');
 
-  try {
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      try {
-        const data = e.target.result;
-        setLoadingSub('Mengekstrak data Excel...');
-        const wb = XLSX.read(data, {type: 'array'});
+    // Auto-convert to raw url
+    url = url.replace('github.com','raw.githubusercontent.com')
+             .replace('/blob/','/').replace('/tree/','/')
+             .replace('/raw/refs/heads/','/').replace('/refs/heads/','/');
+
+    showLoading('Menarik Data dari GitHub...', 'Harap tunggu...');
+    try {
+        const res = await fetch(url);
+        if(!res.ok) throw new Error(`HTTP ${res.status}`);
+        const ab = await res.arrayBuffer();
+        localStorage.setItem('zi_fipp_url', url); // Save history
+        processExcelData(ab, 'Data GitHub');
+    } catch(e) {
+        hideLoading();
+        alert('Gagal mengambil data. Pastikan URL benar dan Repository bersifat Public.\nError: ' + e.message);
+    }
+}
+
+// ==========================================
+//  EXCEL PARSER ENGINE
+// ==========================================
+function processExcelData(buffer, sourceName) {
+    try {
+        const wb = XLSX.read(buffer, {type: 'array'});
         const sheet = wb.Sheets[wb.SheetNames[0]];
         const rows  = XLSX.utils.sheet_to_json(sheet, {header:1, defval:''});
         
-        setLoadingSub('Membangun tampilan dashboard...');
-        parseAndRender(rows, 'File Lokal: ' + file.name);
+        allData = [];
         
-        setStatus('ok','Data lokal dimuat');
-        document.getElementById('btnReload').style.display='none'; // Sembunyikan tombol reload untuk file lokal
-      } catch(err) {
-        setStatus('error','Format salah');
-        showError('Gagal memproses file', err.message);
-        showEmptyState();
-      } finally {
+        // 1. Find Header Row (where "Jawaban" exists)
+        let hdrRowIdx = -1;
+        for(let i=0; i<Math.min(10, rows.length); i++){
+            if(rows[i].some(c => String(c).toLowerCase().includes('jawaban'))){
+                hdrRowIdx = i; break;
+            }
+        }
+        
+        if (hdrRowIdx === -1) throw new Error("Format tidak dikenali. Kolom 'Jawaban' tidak ditemukan di 10 baris pertama.");
+
+        const hdr = rows[hdrRowIdx];
+        const subHdr = rows[hdrRowIdx+1] || [];
+        
+        // Setup base indices
+        const idxFind = (k) => hdr.findIndex(h => String(h).toLowerCase().includes(k));
+        const iJawabUnit = idxFind('jawaban');
+        const iCatUnit   = idxFind('catatan');
+        const iBukti     = idxFind('evidence');
+        
+        // Setup TP (Penilai) indices: look in subheaders from col 15 onwards
+        let iJawabTP = -1, iCatTP = -1;
+        for(let i=15; i<Math.min(subHdr.length, 35); i++){
+            const sh = String(subHdr[i]).toLowerCase();
+            if(sh.includes('jawaban') && iJawabTP<0) iJawabTP = i;
+            if(sh.includes('catatan') && iCatTP<0) iCatTP = i;
+        }
+
+        // 2. Iterate and Extract
+        let activeArea = "Umum";
+        let activeSubArea = "";
+
+        // Standard ZI Areas keywords
+        const areaKeywords = ['MANAJEMEN PERUBAHAN', 'TATALAKSANA', 'SDM APARATUR', 'AKUNTABILITAS', 'PENGAWASAN', 'PELAYANAN PUBLIK', 'BIROKRASI YANG BERSIH', 'PELAYANAN PUBLIK YANG PRIMA'];
+
+        for(let r = hdrRowIdx+2; r < rows.length; r++) {
+            const row = rows[r];
+            if(!row || !row.length || row.every(c=>c==='')) continue;
+
+            const col1 = String(row[0]||'').trim(); // PARENT/Level
+            const col2 = String(row[1]||'').trim(); // A, B, I, II
+            const col3 = String(row[2]||'').trim(); // Pengungkit/Hasil/Area
+            const col4 = String(row[3]||'').trim(); // Sub Area
+            const col6 = String(row[5]||'').trim(); // Indikator
+            
+            // Detect Area changes based on keywords in col 2,3,4
+            const checkText = (col3 + " " + col4).toUpperCase();
+            for(let kw of areaKeywords) {
+                if(checkText.includes(kw)) {
+                    // Extract a clean version of the area name
+                    activeArea = col3 && col3.length > 5 ? col3 : col4;
+                    // Capitalize first letter of each word nicely
+                    activeArea = activeArea.toLowerCase().replace(/\b\w/g, l => l.toUpperCase());
+                    break;
+                }
+            }
+
+            if(col4 && !areaKeywords.some(k=>col4.toUpperCase().includes(k))) activeSubArea = col4;
+
+            // Only process lines that have an indicator text and a Unit answer
+            const jUnit = iJawabUnit >= 0 ? String(row[iJawabUnit]||'').trim() : '';
+            if(!col6 || !jUnit) continue;
+
+            const jTP = iJawabTP >= 0 ? String(row[iJawabTP]||'').trim() : '';
+            const catTP = iCatTP >= 0 ? String(row[iCatTP]||'').trim() : '';
+            const catUnit = iCatUnit >= 0 ? String(row[iCatUnit]||'').trim() : '';
+
+            // Calculate Gap
+            let gapVal = 0;
+            if(jUnit && jTP) {
+                const numU = RANK_VALS[jUnit.toUpperCase()] ?? -1;
+                const numT = RANK_VALS[jTP.toUpperCase()] ?? -1;
+                if(numU !== -1 && numT !== -1) {
+                    gapVal = numU - numT;
+                } else if(jUnit !== jTP) {
+                    gapVal = 1; // non-standard text difference
+                }
+            } else if (jUnit && !jTP) {
+                gapVal = 99; // 99 means Not yet assessed by TP
+            }
+
+            allData.push({
+                area: activeArea,
+                subArea: activeSubArea,
+                indikator: col6,
+                unit: jUnit,
+                tp: jTP,
+                gap: gapVal,
+                catatanTP: catTP,
+                catatanUnit: catUnit,
+                bukti: iBukti >=0 ? String(row[iBukti]||'').trim() : ''
+            });
+        }
+
+        buildDashboard(sourceName);
+
+    } catch(e) {
         hideLoading();
-      }
-    };
-    reader.onerror = function() {
-      setStatus('error','Gagal membaca');
-      showError('Gagal membaca file lokal', 'Pastikan file tidak rusak atau tidak sedang dibuka di aplikasi lain.');
-      showEmptyState();
-      hideLoading();
-    };
-    reader.readAsArrayBuffer(file);
-  } catch(e) {
-    setStatus('error','Gagal memuat');
-    showError('Error Sistem', e.message);
-    showEmptyState();
+        alert('Terjadi kesalahan saat memproses data Excel:\n' + e.message);
+    }
+}
+
+// ==========================================
+//  DASHBOARD BUILDER
+// ==========================================
+function buildDashboard(sourceName) {
+    if(allData.length === 0) {
+        hideLoading();
+        alert('Tidak ada data indikator yang ditemukan. Pastikan format Excel sesuai.');
+        return;
+    }
+
+    // Prepare Grouped Data
+    groupedData = {};
+    let totalSesuai = 0, totalGap = 0, totalCatatan = 0;
+
+    allData.forEach(d => {
+        if(!groupedData[d.area]) groupedData[d.area] = { total:0, sesuai:0, gap:0, unassessed:0, items:[] };
+        groupedData[d.area].total++;
+        groupedData[d.area].items.push(d);
+
+        if(d.gap === 0 && d.tp !== '') { groupedData[d.area].sesuai++; totalSesuai++; }
+        else if(d.gap === 99) { groupedData[d.area].unassessed++; }
+        else { groupedData[d.area].gap++; totalGap++; }
+
+        if(d.catatanTP && d.catatanTP.length > 3) totalCatatan++;
+    });
+
+    // Update UI Elements
+    document.getElementById('emptyState').classList.add('hidden');
+    document.getElementById('dashboardWorkspace').classList.remove('hidden');
+    document.getElementById('inputSection').classList.remove('mb-8');
+    document.getElementById('btnToggleInput').classList.remove('hidden');
+    toggleInputSection(); // Collapse input
+    
+    document.getElementById('statusBadge').innerHTML = `<span class="w-2 h-2 rounded-full bg-green-400 shadow-[0_0_8px_#4ade80]"></span> Terhubung`;
+    document.getElementById('headerSubtitle').innerText = `${sourceName} • ${allData.length} Indikator Divaluasi`;
+
+    // KPIs
+    document.getElementById('kpiTotal').innerText = allData.length;
+    document.getElementById('kpiSesuai').innerText = totalSesuai;
+    document.getElementById('kpiGap').innerText = totalGap;
+    document.getElementById('kpiCatatan').innerText = totalCatatan;
+
+    // Executive Narrative
+    const pSesuai = Math.round((totalSesuai / allData.length) * 100) || 0;
+    let strongestArea = "", weakestArea = "", maxGap = -1, maxSesuai = -1;
+    
+    Object.entries(groupedData).forEach(([area, stats]) => {
+        const gapRatio = stats.gap / stats.total;
+        const sesuaiRatio = stats.sesuai / stats.total;
+        if(gapRatio > maxGap && stats.total > 2) { maxGap = gapRatio; weakestArea = area; }
+        if(sesuaiRatio > maxSesuai && stats.total > 2) { maxSesuai = sesuaiRatio; strongestArea = area; }
+    });
+
+    document.getElementById('executiveSummaryText').innerHTML = 
+        `Dari total <strong>${allData.length} indikator</strong> yang dievaluasi, tingkat kesesuaian dengan Tim Penilai mencapai <strong>${pSesuai}%</strong>. 
+        Area dengan kinerja dokumentasi terbaik adalah <span class="text-green-600 font-bold">${strongestArea || '-'}</span>. 
+        Sedangkan area <span class="text-orange-600 font-bold">${weakestArea || '-'}</span> memerlukan perhatian ekstra karena memiliki proporsi gap/perbedaan nilai tertinggi. 
+        Terdapat <strong>${totalCatatan} catatan kritis</strong> dari Tim Penilai yang wajib ditindaklanjuti.`;
+
+    // Render Tabs
+    renderCharts();
+    renderActionPlan();
+    renderAreaAccordion();
+    renderFullTable();
+
     hideLoading();
-  }
 }
 
 // ==========================================
-//  LOAD DATA: GITHUB
+//  CHARTS (CHART.JS)
 // ==========================================
-async function loadFromGitHub(urlOverride){
-  const url = urlOverride || document.getElementById('githubUrl').value.trim();
-  if(!url){ alert('Masukkan URL raw GitHub pada Opsi 2 terlebih dahulu.'); return; }
+function renderCharts() {
+    const labels = Object.keys(groupedData).map(k => k.length > 20 ? k.substring(0,20)+'...' : k);
+    const dataUnit = [], dataTP = [], dataSesuai = [], dataGap = [];
 
-  // convert berbagai format GitHub URL → raw.githubusercontent.com
-  let rawUrl = url;
-  if(url.includes('github.com') && !url.includes('raw.githubusercontent.com')){
-    rawUrl = url
-      .replace('github.com','raw.githubusercontent.com')
-      .replace('/blob/','/')           
-      .replace('/tree/','/')           
-      .replace('/raw/refs/heads/','/')  
-      .replace('/refs/heads/','/')     
-  }
-  if(rawUrl.includes('raw.githubusercontent.com') && rawUrl.includes('/refs/heads/')){
-    rawUrl = rawUrl.replace('/refs/heads/','/')
-  }
+    Object.values(groupedData).forEach(stats => {
+        // For Radar (Simulating compliance score based on (sesuai / total))
+        // Since we don't have absolute numerical weights easily parsable universally, we use completion %
+        const compliance = Math.round((stats.sesuai / stats.total) * 100) || 0;
+        const selfClaim = Math.round(((stats.sesuai + stats.gap) / stats.total) * 100) || 0; // Assuming Unit claimed all gaps as OK
+        
+        dataTP.push(compliance);
+        dataUnit.push(selfClaim);
 
-  lastUrl = rawUrl;
-  setStatus('loading','Mengambil data GitHub...');
-  showLoading('Mengambil file Excel dari GitHub...','URL: '+rawUrl.substring(0,60)+'...');
-  hideError(); hideEmptyState(); hideDashboard();
+        // For Bar
+        dataSesuai.push(stats.sesuai);
+        dataGap.push(stats.gap);
+    });
 
-  try {
-    const res = await fetch(rawUrl);
-    if(!res.ok) throw new Error(`HTTP ${res.status} — Pastikan URL benar dan file bisa diakses publik.`);
-    const ab = await res.arrayBuffer();
-    setLoadingSub('Membaca dan memproses data Excel...');
-    const wb = XLSX.read(ab, {type:'array'});
-    const sheet = wb.Sheets[wb.SheetNames[0]];
-    const rows  = XLSX.utils.sheet_to_json(sheet, {header:1, defval:''});
+    // Destroy existing charts if any
+    if(chartInstances.radar) chartInstances.radar.destroy();
+    if(chartInstances.bar) chartInstances.bar.destroy();
+
+    // Custom Font configs for Chart JS
+    Chart.defaults.font.family = "'Inter', sans-serif";
+    Chart.defaults.color = '#64748b';
+
+    // 1. Radar Chart
+    const ctxRadar = document.getElementById('radarChart').getContext('2d');
+    chartInstances.radar = new Chart(ctxRadar, {
+        type: 'radar',
+        data: {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'Klaim Unit (%)',
+                    data: dataUnit,
+                    backgroundColor: 'rgba(59, 130, 246, 0.2)', // Blue
+                    borderColor: 'rgba(59, 130, 246, 1)',
+                    borderWidth: 2,
+                    pointBackgroundColor: 'rgba(59, 130, 246, 1)'
+                },
+                {
+                    label: 'Diakui TP (%)',
+                    data: dataTP,
+                    backgroundColor: 'rgba(34, 197, 94, 0.2)', // Green
+                    borderColor: 'rgba(34, 197, 94, 1)',
+                    borderWidth: 2,
+                    pointBackgroundColor: 'rgba(34, 197, 94, 1)'
+                }
+            ]
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            scales: { r: { angleLines: { color: '#e2e8f0' }, grid: { color: '#e2e8f0' }, pointLabels: { font: { size: 10, weight: '600' } }, suggestedMin: 0, suggestedMax: 100 } },
+            plugins: { legend: { position: 'bottom' } }
+        }
+    });
+
+    // 2. Bar Chart
+    const ctxBar = document.getElementById('barChart').getContext('2d');
+    chartInstances.bar = new Chart(ctxBar, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [
+                { label: 'Sesuai/Baik', data: dataSesuai, backgroundColor: '#22c55e', borderRadius: 4 },
+                { label: 'Ada Gap / Perbaikan', data: dataGap, backgroundColor: '#f97316', borderRadius: 4 }
+            ]
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            scales: { x: { stacked: true, grid:{display:false} }, y: { stacked: true, border:{dash:[4,4]} } },
+            plugins: { legend: { position: 'bottom' } }
+        }
+    });
+}
+
+// ==========================================
+//  ACTION PLAN (TINDAK LANJUT)
+// ==========================================
+function renderActionPlan() {
+    const container = document.getElementById('actionCardsContainer');
     
-    setLoadingSub('Membangun tampilan dashboard...');
-    parseAndRender(rows, rawUrl);
+    // Filter items that have Gap > 0 OR have Catatan TP
+    const actionItems = allData.filter(d => (d.gap > 0 && d.gap !== 99) || (d.catatanTP && d.catatanTP.length > 5));
     
-    setStatus('ok','Data GitHub dimuat');
-    document.getElementById('btnReload').style.display='inline-block';
+    // Sort: Critical gaps first (gap >= 2), then notes
+    actionItems.sort((a,b) => b.gap - a.gap);
+
+    if(actionItems.length === 0) {
+        container.innerHTML = `<div class="p-8 text-center text-gray-500 bg-white rounded-xl border border-gray-200">Tidak ada tindak lanjut khusus. Semua indikator telah sesuai! 🎉</div>`;
+        return;
+    }
+
+    container.innerHTML = actionItems.map((d, i) => {
+        const isCritical = d.gap >= 2;
+        const badgeColor = isCritical ? 'bg-red-100 text-red-700 border-red-200' : 'bg-orange-100 text-orange-700 border-orange-200';
+        
+        return `
+        <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition">
+            <div class="flex flex-col md:flex-row md:items-start justify-between gap-4">
+                <div class="flex-grow">
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="px-2.5 py-0.5 text-[10px] font-bold uppercase rounded border ${badgeColor}">
+                            ${isCritical ? '🚨 Prioritas Tinggi' : '⚠️ Perlu Tindakan'}
+                        </span>
+                        <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider">${d.area}</span>
+                    </div>
+                    <h4 class="text-sm font-bold text-gray-800 leading-snug mb-3">${d.indikator}</h4>
+                    
+                    ${d.catatanTP ? `
+                    <div class="bg-blue-50 border-l-4 border-unnes-blue p-3 rounded-r-lg">
+                        <p class="text-xs font-bold text-unnes-blue uppercase mb-1">💬 Catatan Tim Penilai:</p>
+                        <p class="text-sm text-gray-700 leading-relaxed">${d.catatanTP}</p>
+                    </div>` : ''}
+                </div>
+                
+                <div class="md:w-48 flex-shrink-0 bg-gray-50 p-3 rounded-lg border border-gray-100 flex flex-col justify-center">
+                    <div class="text-[10px] text-gray-500 font-bold uppercase mb-1">Banding Nilai</div>
+                    <div class="flex justify-between items-center mb-1">
+                        <span class="text-sm text-gray-600">Unit FIPP:</span>
+                        <span class="font-bold text-gray-800 bg-white px-2 py-0.5 rounded shadow-sm">${d.unit || '-'}</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-gray-600">Tim Penilai:</span>
+                        <span class="font-bold text-gray-800 bg-white px-2 py-0.5 rounded shadow-sm border ${d.gap>0?'border-orange-400':'border-gray-200'}">${d.tp || '-'}</span>
+                    </div>
+                </div>
+            </div>
+        </div>`;
+    }).join('');
+}
+
+// ==========================================
+//  AREA ACCORDION
+// ==========================================
+function renderAreaAccordion() {
+    const container = document.getElementById('areaAccordionContainer');
     
-    // Simpan history URL sukses
-    localStorage.setItem('zi_fipp_url', rawUrl);
-  } catch(e){
-    setStatus('error','Gagal memuat');
-    showError('Gagal mengambil data dari GitHub', e.message + ' — Periksa URL dan pastikan repo bersifat publik.');
-    showEmptyState();
-  } finally {
-    hideLoading();
-  }
+    container.innerHTML = Object.entries(groupedData).map(([area, stats], index) => {
+        const pct = Math.round((stats.sesuai / stats.total) * 100) || 0;
+        const colorClass = pct >= 80 ? 'text-green-600' : (pct >= 50 ? 'text-orange-500' : 'text-red-500');
+        const bgBar = pct >= 80 ? 'bg-green-500' : (pct >= 50 ? 'bg-orange-400' : 'bg-red-500');
+
+        let rows = stats.items.map(item => {
+            const statusIcon = item.gap === 0 ? '✅' : (item.gap === 99 ? '⏳' : '⚠️');
+            return `
+            <div class="py-3 border-b border-gray-100 last:border-0 hover:bg-gray-50 flex gap-3 items-start px-2">
+                <div class="mt-0.5 text-sm">${statusIcon}</div>
+                <div class="flex-grow">
+                    <div class="text-sm font-medium text-gray-800">${item.indikator}</div>
+                    <div class="text-xs text-gray-500 mt-1 flex gap-4">
+                        <span>Unit: <strong>${item.unit||'-'}</strong></span>
+                        <span>TP: <strong class="${item.gap>0 && item.gap!==99 ? 'text-orange-600':''}">${item.tp||'-'}</strong></span>
+                    </div>
+                </div>
+            </div>`;
+        }).join('');
+
+        return `
+        <div class="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">
+            <button onclick="toggleAccordion('acc-${index}')" class="w-full px-5 py-4 flex items-center justify-between bg-white hover:bg-gray-50 transition">
+                <div class="flex flex-col text-left">
+                    <span class="text-base font-bold text-gray-800">${area}</span>
+                    <span class="text-xs text-gray-500 font-medium">${stats.total} Indikator &bull; ${stats.gap} Gap</span>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div class="hidden sm:flex flex-col items-end">
+                        <span class="text-xs font-bold ${colorClass}">${pct}% Sesuai</span>
+                        <div class="w-24 h-1.5 bg-gray-200 rounded-full mt-1 overflow-hidden">
+                            <div class="h-full ${bgBar}" style="width: ${pct}%"></div>
+                        </div>
+                    </div>
+                    <svg id="icon-acc-${index}" class="w-5 h-5 text-gray-400 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </div>
+            </button>
+            <div id="acc-${index}" class="hidden px-5 pb-4 border-t border-gray-100 bg-white max-h-96 overflow-y-auto custom-scrollbar">
+                ${rows}
+            </div>
+        </div>`;
+    }).join('');
 }
 
-async function reloadData(){
-  if(lastUrl) await loadFromGitHub(lastUrl);
+function toggleAccordion(id) {
+    const el = document.getElementById(id);
+    const icon = document.getElementById('icon-' + id);
+    if(el.classList.contains('hidden')) {
+        el.classList.remove('hidden');
+        icon.classList.add('rotate-180');
+    } else {
+        el.classList.add('hidden');
+        icon.classList.remove('rotate-180');
+    }
 }
 
 // ==========================================
-//  PARSE EXCEL → allData
+//  FULL TABLE
 // ==========================================
-function parseAndRender(rows, sourceUrl){
-  allData = [];
+function renderFullTable() {
+    // Populate Dropdown
+    const filterArea = document.getElementById('filterArea');
+    filterArea.innerHTML = '<option value="">Semua Area</option>' + 
+        Object.keys(groupedData).map(k => `<option value="${k}">${k}</option>`).join('');
 
-  // Deteksi header row
-  let headerRow = -1;
-  for(let i=0;i<Math.min(10,rows.length);i++){
-    if(rows[i].some(c=>String(c).toLowerCase().includes('jawaban'))){ headerRow=i; break; }
-  }
+    renderTableRows(allData);
+}
 
-  const hdr = headerRow>=0 ? rows[headerRow] : [];
-  const colIdx = (keyword) => {
-    const k = keyword.toLowerCase();
-    for(let i=0;i<hdr.length;i++){
-      if(String(hdr[i]).toLowerCase().includes(k)) return i;
-    }
-    return -1;
-  };
-
-  const iJawabanUnit  = colIdx('jawaban');
-  const iCatUnit      = colIdx('catatan/keterangan');
-  const iDocs         = colIdx('daftar evidence');
-  const iBobot        = colIdx('bobot');
-  const iPenjelasan   = colIdx('penjelasan');
-
-  let iTPJawaban=-1, iTPCatatan=-1;
-  let subHdr = headerRow>=0 ? rows[headerRow+1] : [];
-  let tpAnswerCol=-1, tpCatCol=-1;
-  for(let i=17;i<Math.min(subHdr.length,30);i++){
-    const h=String(subHdr[i]).toLowerCase();
-    if(h.includes('jawaban') && tpAnswerCol<0) tpAnswerCol=i;
-    if(h.includes('catatan') && tpCatCol<0) tpCatCol=i;
-  }
-
-  const dataStart = headerRow>=0 ? headerRow+2 : 2;
-  let currentKomponen='';
-
-  for(let r=dataStart;r<rows.length;r++){
-    const row=rows[r];
-    if(!row || row.every(c=>c==='' || c===null || c===undefined)) continue;
-
-    const col1=String(row[0]||'').trim();
-    const col2=String(row[1]||'').trim();
-    const col3=String(row[2]||'').trim();
-    const col4=String(row[3]||'').trim();
-    const col5=String(row[4]||'').trim();
-    const col6=String(row[5]||'').trim();
-
-    if(col2 && (col2.toUpperCase()===col2 || ['A.','B.','I.','II.','III.','IV.','V.','VI.'].some(x=>col2.startsWith(x)))){
-      if(col3 && col3.toUpperCase()===col3 && col4==='') { currentKomponen=col3; continue; }
-      if(col3==='') { currentKomponen=col2; continue; }
-    }
-
-    const jawabanUnit = iJawabanUnit>=0 ? String(row[iJawabanUnit]||'').trim() : '';
-    const jawabanTP   = tpAnswerCol>=0  ? String(row[tpAnswerCol]||'').trim() : '';
-    const catatanTP   = tpCatCol>=0     ? String(row[tpCatCol]||'').trim() : '';
-    const catatanUnit = iCatUnit>=0     ? String(row[iCatUnit]||'').trim() : '';
-    const docsRaw     = iDocs>=0        ? String(row[iDocs]||'').trim() : '';
-    const bobot       = iBobot>=0       ? row[iBobot] : '';
-    const penjelasan  = iPenjelasan>=0  ? String(row[iPenjelasan]||'').trim() : '';
-
-    if(!col6 || !jawabanUnit) continue;
-
-    const kode = [col1||col2||col3,col4,col5].filter(x=>x&&x!=='PARENT').join('.').replace(/\.+/g,'.');
-    const docs = docsRaw.split('\n').map(d=>d.replace(/^\d+\.\s*/,'')).filter(d=>d.trim()&&!d.startsWith('http'));
-
-    let komp = currentKomponen;
-    if(!komp){
-      if(String(row[3]||'').trim()) komp=String(row[3]||'').trim();
+function renderTableRows(data) {
+    const tbody = document.getElementById('fullTableBody');
+    if(data.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" class="px-6 py-8 text-center text-gray-500">Tidak ada data yang sesuai filter.</td></tr>`;
+        return;
     }
 
-    const r2=String(row[2]||'').trim();
-    const r3=String(row[3]||'').trim();
-    if(r2 && !r3){
-      if(['MANAJEMEN PERUBAHAN','PENATAAN TATALAKSANA','PENATAAN SISTEM MANAJEMEN SDM APARATUR',
-          'AKUNTABILITAS','PENGAWASAN','PENANGANAN BENTURAN KEPENTINGAN','PELAYANAN PUBLIK',
-          'PEMENUHAN','REFORMASI','HASIL'].some(k=>r2.toUpperCase().includes(k))){
-        currentKomponen=r2; continue;
-      }
-    }
+    tbody.innerHTML = data.map(d => {
+        let tpBadge = ``;
+        if(d.gap === 0 && d.tp) tpBadge = `<span class="px-2 py-1 bg-green-100 text-green-800 font-bold rounded text-xs">${d.tp}</span>`;
+        else if (d.gap === 99) tpBadge = `<span class="text-gray-400 text-xs">-</span>`;
+        else tpBadge = `<span class="px-2 py-1 bg-orange-100 text-orange-800 font-bold rounded text-xs">${d.tp}</span>`;
 
-    const item = {
-      kode: kode||'—',
-      komponen: komp||'—',
-      indikator: col6,
-      jawabanUnit, jawabanTP, catatanTP, catatanUnit,
-      docs, bobot: bobot||'',
-      penjelasan
-    };
-
-    const gap = calcGap(jawabanUnit, jawabanTP);
-    item.gap = gap;
-    item.status = gap>0 ? (gap>=2?'danger':'warn') : 'ok';
-
-    allData.push(item);
-  }
-
-  renderAll(sourceUrl);
+        return `
+        <tr class="hover:bg-blue-50 transition">
+            <td class="px-6 py-4">
+                <div class="text-xs font-bold text-gray-800">${d.area}</div>
+                <div class="text-[10px] text-gray-500 mt-1">${d.subArea}</div>
+            </td>
+            <td class="px-6 py-4 text-sm text-gray-800 font-medium leading-relaxed">${d.indikator}</td>
+            <td class="px-6 py-4 text-center"><span class="px-2 py-1 bg-gray-100 text-gray-800 font-bold rounded text-xs border border-gray-200">${d.unit || '-'}</span></td>
+            <td class="px-6 py-4 text-center">${tpBadge}</td>
+            <td class="px-6 py-4 text-xs text-gray-600 italic line-clamp-3 hover:line-clamp-none">${d.catatanTP || '-'}</td>
+        </tr>`;
+    }).join('');
 }
 
-function calcGap(unit, tp){
-  if(!unit||!tp) return 0;
-  const rank={'A':4,'B':3,'C':2,'D':1,'E':0,'YA':4,'TIDAK':0,'YES':4,'NO':0};
-  const u=rank[unit.toUpperCase().trim()];
-  const t=rank[tp.toUpperCase().trim()];
-  if(u!==undefined && t!==undefined) return u-t;
-  if(unit.trim()===tp.trim()) return 0;
-  return unit.trim()&&tp.trim()&&unit.trim()!==tp.trim() ? 1 : 0;
+function filterFullTable() {
+    const q = document.getElementById('searchInput').value.toLowerCase();
+    const a = document.getElementById('filterArea').value;
+    const g = document.getElementById('filterGap').value;
+
+    const filtered = allData.filter(d => {
+        const matchQ = !q || d.indikator.toLowerCase().includes(q) || d.catatanTP.toLowerCase().includes(q);
+        const matchA = !a || d.area === a;
+        const matchG = !g || (g === 'gap' && d.gap > 0 && d.gap !== 99) || (g === 'ok' && d.gap === 0);
+        return matchQ && matchA && matchG;
+    });
+
+    renderTableRows(filtered);
 }
 
-// ==========================================
-//  RENDER
-// ==========================================
-function renderAll(sourceUrl){
-  if(!allData.length){ showEmptyState(); return; }
-  showDashboard();
-
-  document.getElementById('infoSource').textContent='Sumber: '+sourceUrl.split('/').slice(-1)[0];
-  document.getElementById('infoTime').textContent=new Date().toLocaleString('id-ID');
-  document.getElementById('infoTotal').textContent=allData.length;
-  document.getElementById('lastUpdateLabel').textContent=
-    'FIPP UNNES 2026 • Dimuat: '+new Date().toLocaleTimeString('id-ID');
-
-  const gap   = allData.filter(d=>d.gap>0);
-  const kritis= allData.filter(d=>d.gap>=2);
-  const ok    = allData.filter(d=>d.gap===0&&d.jawabanTP);
-  const hasCat= allData.filter(d=>d.catatanTP&&d.catatanTP.length>3);
-
-  document.getElementById('statsRow').innerHTML=`
-    <div class="stat-card total" onclick="showTab('semua')"><div class="num">${allData.length}</div><div class="lbl">📋 Total Item</div></div>
-    <div class="stat-card danger" onclick="showTab('prioritas')"><div class="num">${kritis.length}</div><div class="lbl">🚨 Gap Kritis</div></div>
-    <div class="stat-card warn" onclick="showTab('gap')"><div class="num">${gap.length}</div><div class="lbl">⚠️ Ada Gap</div></div>
-    <div class="stat-card ok" onclick="showTab('baik')"><div class="num">${ok.length}</div><div class="lbl">✅ Sudah Baik</div></div>
-    <div class="stat-card info"><div class="num">${hasCat.length}</div><div class="lbl">📝 Ada Catatan TP</div></div>
-  `;
-
-  const komponen = {};
-  allData.forEach(d=>{
-    const k=d.komponen||'Lainnya';
-    if(!komponen[k]) komponen[k]={total:0,gap:0};
-    komponen[k].total++;
-    if(d.gap>0) komponen[k].gap++;
-  });
-  
-  document.getElementById('barChart').innerHTML=Object.entries(komponen).map(([k,v])=>{
-    const pct=v.total>0?Math.round((1-v.gap/v.total)*100):100;
-    const color=pct>=80?'#27ae60':pct>=60?'#e67e22':'#c0392b';
-    const lbl=k.length>28?k.substring(0,28)+'…':k;
-    return `<div class="bar-row">
-      <div class="bar-label">${lbl}</div>
-      <div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${color}">${pct}%</div></div>
-      <div class="bar-val" style="color:${color}">${v.gap>0?'⚠️':'✅'}</div>
-    </div>`;
-  }).join('');
-
-  document.getElementById('komponenBody').innerHTML=Object.entries(komponen).map(([k,v])=>{
-    const pct=v.total>0?Math.round((1-v.gap/v.total)*100):100;
-    const pill=pct>=80?'pill-ok':pct>=60?'pill-warn':'pill-danger';
-    const lbl=pct>=80?'✅ Baik':pct>=60?'⚠️ Perhatian':'🚨 Perlu Perbaikan';
-    return `<tr><td><strong>${k}</strong></td><td>${v.total} item</td><td><span class="pill ${pill}">${lbl}</span></td><td>${v.gap} item ada gap</td></tr>`;
-  }).join('');
-
-  document.getElementById('prioritasGrid').innerHTML=kritis.length?
-    kritis.map((d,i)=>itemCard(d,i,'danger','🚨 Prioritas Kritis')).join(''):
-    '<p style="color:#aaa;padding:20px">Tidak ada item dengan gap kritis.</p>';
-
-  document.getElementById('gapGrid').innerHTML=gap.length?
-    gap.map((d,i)=>itemCard(d,i,d.gap>=2?'danger':'warn','⚠️ Ada Gap')).join(''):
-    '<p style="color:#aaa;padding:20px">Tidak ada gap ditemukan.</p>';
-
-  document.getElementById('baikGrid').innerHTML=ok.length?
-    ok.map((d,i)=>itemCard(d,i,'ok','✅ Sudah Baik')).join(''):
-    '<p style="color:#aaa;padding:20px">Belum ada item yang dinilai baik oleh TP.</p>';
-
-  renderAllTable(allData);
-
-  document.getElementById('aksiBody').innerHTML=gap.map((d,i)=>{
-    const prior=d.gap>=2?'<span class="pill pill-danger">URGENT</span>':'<span class="pill pill-warn">Perlu</span>';
-    return `<tr>
-      <td>${i+1}</td>
-      <td>${d.komponen}</td>
-      <td style="max-width:220px">${d.indikator}</td>
-      <td><span class="pill pill-ok">${d.jawabanUnit}</span> → <span class="pill ${d.gap>=2?'pill-danger':'pill-warn'}">${d.jawabanTP}</span></td>
-      <td style="max-width:260px;font-size:.8em">${d.catatanTP||'—'}</td>
-      <td>${prior}</td>
-    </tr>`;
-  }).join('')||'<tr><td colspan="6" style="text-align:center;color:#aaa;padding:20px">Tidak ada gap — semua item sudah baik! 🎉</td></tr>';
-
-  const kompSet = [...new Set(allData.map(d=>d.komponen).filter(Boolean))];
-  const sel = document.getElementById('filterKomponen');
-  sel.innerHTML='<option value="">Semua Komponen</option>'+
-    kompSet.map(k=>`<option value="${k}">${k}</option>`).join('');
-
-  document.getElementById('searchInput').oninput=filterTable;
-  document.getElementById('filterKomponen').onchange=filterTable;
-  document.getElementById('filterStatus').onchange=filterTable;
-}
-
-function itemCard(d, idx, cls, labelText){
-  const tpClass = d.gap>=2?'pill-danger':d.gap>0?'pill-warn':'pill-ok';
-  const dataIdx = allData.indexOf(d);
-  return `<div class="item-card ${cls}" onclick="openModal(${dataIdx})">
-    <div class="item-label">${labelText} — ${d.komponen||'—'}</div>
-    <div class="item-title">${d.indikator}</div>
-    <div class="item-meta">
-      <span class="pill pill-ok">Unit: ${d.jawabanUnit}</span>
-      <span class="pill ${tpClass}">TP: ${d.jawabanTP||'—'}</span>
-      ${d.gap>0?`<span class="pill ${tpClass}">Gap: ${d.jawabanUnit}→${d.jawabanTP}</span>`:''}
-    </div>
-    <div class="click-hint">🔍 klik detail</div>
-  </div>`;
-}
-
-function renderAllTable(data){
-  document.getElementById('allDataBody').innerHTML=data.map((d,i)=>{
-    const pill=d.gap>=2?'pill-danger':d.gap>0?'pill-warn':'pill-ok';
-    const lbl=d.gap>=2?'🚨 Kritis':d.gap>0?'⚠️ Gap':'✅ Baik';
-    return `<tr onclick="openModal(${allData.indexOf(d)})" style="cursor:pointer">
-      <td>${i+1}</td>
-      <td style="max-width:140px;font-size:.8em">${d.komponen}</td>
-      <td style="max-width:240px">${d.indikator}</td>
-      <td><span class="pill pill-ok">${d.jawabanUnit}</span></td>
-      <td><span class="pill ${pill}">${d.jawabanTP||'—'}</span></td>
-      <td><span class="pill ${pill}">${lbl}</span></td>
-      <td style="max-width:200px;font-size:.78em;color:#666">${d.catatanTP?d.catatanTP.substring(0,80)+(d.catatanTP.length>80?'…':''):'—'}</td>
-    </tr>`;
-  }).join('');
-}
-
-function filterTable(){
-  const q = document.getElementById('searchInput').value.toLowerCase();
-  const k = document.getElementById('filterKomponen').value;
-  const s = document.getElementById('filterStatus').value;
-  const filtered = allData.filter(d=>{
-    const matchQ = !q || d.indikator.toLowerCase().includes(q)||d.komponen.toLowerCase().includes(q)||d.catatanTP.toLowerCase().includes(q);
-    const matchK = !k || d.komponen===k;
-    const matchS = !s || (s==='gap'&&d.gap>0) || (s==='ok'&&d.gap===0);
-    return matchQ&&matchK&&matchS;
-  });
-  renderAllTable(filtered);
-}
-
-// ==========================================
-//  MODAL
-// ==========================================
-function openModal(idx){
-  const d = allData[idx];
-  if(!d) return;
-  document.getElementById('modalTitle').textContent = d.indikator;
-  const tpClass = d.gap>=2?'tp-danger':d.gap>0?'tp-warn':'tp-ok';
-  const catClass = d.gap>=2?'danger':d.gap>0?'':' ok';
-  let body=`
-    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px">
-      <span class="pill ${d.gap>=2?'pill-danger':d.gap>0?'pill-warn':'pill-ok'}">${d.gap>=2?'🚨 Kritis':d.gap>0?'⚠️ Ada Gap':'✅ Sudah Baik'}</span>
-      <span class="pill pill-gray">${d.komponen}</span>
-      ${d.bobot?`<span class="pill pill-gray">Bobot: ${d.bobot}</span>`:''}
-    </div>
-    <div class="m-section">
-      <div class="m-label">Perbandingan Penilaian</div>
-      <div class="m-2col">
-        <div class="m-box unit"><div class="g-title">Jawaban Unit FIPP</div><div class="g-val">${d.jawabanUnit}</div></div>
-        <div class="m-box ${tpClass}"><div class="g-title">Penilaian Tim Penilai (TP)</div><div class="g-val">${d.jawabanTP||'—'}</div></div>
-      </div>
-    </div>`;
-  if(d.catatanTP){
-    body+=`<div class="m-section">
-      <div class="m-label">💬 Catatan Tim Penilai</div>
-      <div class="catatan-box${catClass}">${d.catatanTP}</div>
-    </div>`;
-  }
-  if(d.docs&&d.docs.length){
-    body+=`<div class="m-section">
-      <div class="m-label">📁 Dokumen yang Sudah Ada</div>
-      <div class="docs-box"><h4>✅ Evidence tersedia</h4><ul>${d.docs.map(x=>`<li>${x}</li>`).join('')}</ul></div>
-    </div>`;
-  }
-  if(d.gap>0){
-    body+=`<div class="m-section">
-      <div class="m-label">🎯 Yang Perlu Dilengkapi</div>
-      <div class="list-box"><h4>📌 Tindak Lanjut</h4>
-      <p style="font-size:.85em;color:#333;line-height:1.7">
-        Jawaban Unit (<strong>${d.jawabanUnit}</strong>) lebih tinggi dari penilaian TP (<strong>${d.jawabanTP}</strong>). 
-        Cek catatan TP di atas dan lengkapi dokumen pendukung yang diminta. 
-        Pastikan seluruh administrasi (undangan, daftar hadir, notulensi, BA) tersedia sebagai evidence.
-      </p></div>
-    </div>`;
-  }
-  document.getElementById('modalBody').innerHTML=body;
-  document.getElementById('modalOverlay').classList.add('open');
-  document.body.style.overflow='hidden';
-}
-
-function closeModal(){document.getElementById('modalOverlay').classList.remove('open');document.body.style.overflow='';}
-function closeBg(e){if(e.target===document.getElementById('modalOverlay'))closeModal();}
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
-
-// ==========================================
-//  TAB & UI HELPERS
-// ==========================================
-function showTab(id){
-  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-  document.getElementById('tab-'+id).classList.add('active');
-  const map={overview:0,prioritas:1,gap:2,baik:3,semua:4,aksi:5};
-  const btns=document.querySelectorAll('.tab-btn');
-  if(btns[map[id]]) btns[map[id]].classList.add('active');
-}
-
-function setStatus(s,t){
-  const d=document.getElementById('statusDot');
-  const tx=document.getElementById('statusText');
-  d.className='status-dot '+s; tx.textContent=t;
-}
-function showLoading(t,s){
-  document.querySelector('.loading-text').textContent=t;
-  document.getElementById('loadingSub').textContent=s||'';
-  document.getElementById('loadingOverlay').classList.add('show');
-}
-function hideLoading(){document.getElementById('loadingOverlay').classList.remove('show');}
-function setLoadingSub(t){document.getElementById('loadingSub').textContent=t;}
-function showError(title,msg){
-  document.getElementById('errorTitle').textContent=title;
-  document.getElementById('errorMsg').textContent=msg;
-  document.getElementById('errorBanner').classList.add('show');
-}
-function hideError(){document.getElementById('errorBanner').classList.remove('show');}
-function showEmptyState(){document.getElementById('emptyState').classList.add('show');}
-function hideEmptyState(){document.getElementById('emptyState').classList.remove('show');}
-function showDashboard(){document.getElementById('mainDashboard').style.display='block';}
-function hideDashboard(){document.getElementById('mainDashboard').style.display='none';}
-
-// Auto-load dari localStorage atau URL param
-window.addEventListener('DOMContentLoaded', () => {
-  const params = new URLSearchParams(window.location.search);
-  const srcParam = params.get('src');
-  if(srcParam){
-    document.getElementById('githubUrl').value = srcParam;
-    setTimeout(()=>loadFromGitHub(), 500);
-    return;
-  }
-  try{
-    const saved = localStorage.getItem('zi_fipp_url');
-    if(saved){
-      document.getElementById('githubUrl').value = saved;
-      const hint = document.createElement('div');
-      hint.style.cssText='background:#e8f5e9;border-radius:6px;padding:6px 12px;font-size:.78em;color:#1b5e20;margin-top:8px;display:flex;justify-content:space-between;align-items:center';
-      hint.innerHTML='✅ URL tersimpan dari sesi sebelumnya ditemukan. <button onclick="loadFromGitHub()" style="background:#27ae60;color:#fff;border:none;padding:5px 12px;border-radius:5px;cursor:pointer;font-size:.9em;font-weight:bold">Muat URL Tersimpan</button>';
-      document.getElementById('githubUrl').parentElement.appendChild(hint);
-    }
-  }catch(e){}
-});
-
-document.getElementById('githubUrl').addEventListener('keydown',e=>{
-  if(e.key==='Enter') loadFromGitHub();
-});
 </script>
 </body>
 </html>
